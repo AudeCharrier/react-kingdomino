@@ -14,3 +14,12 @@ createRoot(rootElement).render(
 		<App />
 	</StrictMode>,
 );
+
+//impossible de localiser le module data/baseTiles --> noms ?
+
+//fct aléatoire qui sort plusieurs chiffres entre 1 et 48
+//classer par ordre croissant
+//find ça dans le tableau
+
+//ou : en affihcer plusieurs pour tester, déplacer, rotation, adjacence position
+//calcul score ?

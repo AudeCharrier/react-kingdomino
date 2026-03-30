@@ -1,35 +1,35 @@
 import "./App.css";
 
-import Tile1Recto from "./components/base/base_tiles/assets/tile_1_recto.webp";
-import Tile1Verso from "./components/base/base_tiles/assets/tile_1_verso.webp";
+import Tile4Recto from "./components/base/base_tiles/assets/tile_4_recto.webp";
+import Tile4Verso from "./components/base/base_tiles/assets/tile_4_verso.webp";
 import BaseTile from "./components/base/base_tiles/BaseTile";
 
 function App() {
-	const tileUn = {
-		id: 1,
-		imgSrcRecto: Tile1Recto,
-		imgSrcVerso: Tile1Verso,
+	const tileFour = {
+		id: 4,
+		imgSrcRecto: Tile4Recto,
+		imgSrcVerso: Tile4Verso,
 
 		left: {
 			landscape: "desert",
-			crowns: 0,
-			alt: "tile#1 recto left",
+			flames: 0,
+			alt: "tile#4 recto left",
 		},
 		right: {
-			landscape: "forest",
-			crowns: 1,
-			alt: "tile#1 recto right",
+			landscape: "meadow",
+			flames: 0,
+			resource: "mammoth",
+			alt: "tile#4 recto right",
 		},
 	};
 	return (
-		<div>
-			<BaseTile
-				imgSrcRecto={tileUn.imgSrcRecto}
-				imgSrcVerso={tileUn.imgSrcVerso}
-				left={tileUn.left}
-				right={tileUn.right}
-			/>
-		</div>
+		<BaseTile
+			id={tileFour.id}
+			imgSrcRecto={tileFour.imgSrcRecto}
+			imgSrcVerso={tileFour.imgSrcVerso}
+			left={tileFour.left}
+			right={tileFour.right}
+		/>
 	);
 }
 //balise-composant tout est inventé : le nom de la balise et les attributs
