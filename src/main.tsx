@@ -15,8 +15,6 @@ createRoot(rootElement).render(
 	</StrictMode>,
 );
 
-//impossible de localiser le module data/baseTiles --> noms ?
-
 //fct aléatoire qui sort plusieurs chiffres entre 1 et 48
 //classer par ordre croissant
 //find ça dans le tableau

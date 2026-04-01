@@ -95,7 +95,7 @@ import Tile47Verso from "../components/base/base_tiles/assets/tile_47_verso.webp
 import Tile48Recto from "../components/base/base_tiles/assets/tile_48_recto.webp";
 import Tile48Verso from "../components/base/base_tiles/assets/tile_48_verso.webp";
 
-export const baseTilesArray = [
+const baseTilesArray = [
 	{
 		id: 1,
 		imgSrcRecto: Tile1Recto,
@@ -577,6 +577,7 @@ export const baseTilesArray = [
 		},
 		right: {
 			landscape: "volcano",
+			flames: 0,
 			volcanoFire: 1,
 			alt: "tile#28 recto right",
 		},
@@ -593,6 +594,7 @@ export const baseTilesArray = [
 		},
 		right: {
 			landscape: "volcano",
+			flames: 0,
 			volcanoFire: 1,
 			alt: "tile#29 recto right",
 		},
@@ -748,6 +750,7 @@ export const baseTilesArray = [
 		},
 		right: {
 			landscape: "volcano",
+			flames: 0,
 			volcanoFire: 1,
 			alt: "tile#38 recto right",
 		},
@@ -765,6 +768,7 @@ export const baseTilesArray = [
 		},
 		right: {
 			landscape: "volcano",
+			flames: 0,
 			volcanoFire: 1,
 			alt: "tile#39 recto right",
 		},
@@ -782,6 +786,7 @@ export const baseTilesArray = [
 		},
 		right: {
 			landscape: "volcano",
+			flames: 0,
 			volcanoFire: 1,
 			alt: "tile#40 recto right",
 		},
@@ -816,6 +821,7 @@ export const baseTilesArray = [
 		},
 		right: {
 			landscape: "volcano",
+			flames: 0,
 			volcanoFire: 2,
 			alt: "tile#42 recto right",
 		},
@@ -833,6 +839,7 @@ export const baseTilesArray = [
 		},
 		right: {
 			landscape: "volcano",
+			flames: 0,
 			volcanoFire: 2,
 			alt: "tile#43 recto right",
 		},
@@ -850,6 +857,7 @@ export const baseTilesArray = [
 		},
 		right: {
 			landscape: "volcano",
+			flames: 0,
 			volcanoFire: 2,
 			alt: "tile#44 recto right",
 		},
@@ -867,6 +875,7 @@ export const baseTilesArray = [
 		},
 		right: {
 			landscape: "volcano",
+			flames: 0,
 			volcanoFire: 2,
 			alt: "tile#45 recto right",
 		},
@@ -916,8 +925,11 @@ export const baseTilesArray = [
 		},
 		right: {
 			landscape: "volcano",
+			flames: 0,
 			volcanoFire: 3,
 			alt: "tile#48 recto right",
 		},
 	},
 ];
+
+export default baseTilesArray;

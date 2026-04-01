@@ -1,38 +1,54 @@
 import "./App.css";
 
-import Tile4Recto from "./components/base/base_tiles/assets/tile_4_recto.webp";
-import Tile4Verso from "./components/base/base_tiles/assets/tile_4_verso.webp";
 import BaseTile from "./components/base/base_tiles/BaseTile";
+import baseTilesArray from "./data/baseTiles.js";
 
 function App() {
-	const tileFour = {
-		id: 4,
-		imgSrcRecto: Tile4Recto,
-		imgSrcVerso: Tile4Verso,
+	const testId = 6;
+	const aleatoireTile = baseTilesArray.find((tile) => tile.id === testId);
+	//faire un usestate à la place de la variable
 
-		left: {
-			landscape: "desert",
-			flames: 0,
-			alt: "tile#4 recto left",
-		},
-		right: {
-			landscape: "meadow",
-			flames: 0,
-			resource: "mammoth",
-			alt: "tile#4 recto right",
-		},
-	};
-	return (
-		<BaseTile
-			id={tileFour.id}
-			imgSrcRecto={tileFour.imgSrcRecto}
-			imgSrcVerso={tileFour.imgSrcVerso}
-			left={tileFour.left}
-			right={tileFour.right}
-		/>
-	);
+	//TypeScript a besoin d'etre sur que la cible existe, il aime pas ça avec find
+	//TypeScript ne peut pas savoir à la compilation si l'id 6 existe dans ton tableau. Donc il te force à gérer le cas où rien n'est trouvé.
+
+	if (!aleatoireTile) {
+		return <p>Tile not found !</p>;
+	} else
+		return (
+			/* 		<section>
+			{baseTilesArray.map((tile) => (
+				<BaseTile
+					key={tile.id}
+					id={tile.id}
+					imgSrcRecto={tile.imgSrcRecto}
+					imgSrcVerso={tile.imgSrcVerso}
+					left={tile.left}
+					right={tile.right}
+				/>
+			))}
+
+		</section> */
+			<BaseTile
+				id={aleatoireTile.id}
+				imgSrcRecto={aleatoireTile.imgSrcRecto}
+				imgSrcVerso={aleatoireTile.imgSrcVerso}
+				left={aleatoireTile.left}
+				right={aleatoireTile.right}
+			/>
+		);
 }
+
 //balise-composant tout est inventé : le nom de la balise et les attributs
 //c'est là que je mets le nom du props
 
 export default App;
+
+/* const minId = baseTilesArray[0].id;
+const maxId = baseTilesArray[baseTilesArray.length - 1].id; 
+
+function randomId(min, max) {
+	return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+randomId(minId, maxId);
+ */
