@@ -1,5 +1,4 @@
 import "./BaseTile.css";
-// import baseTilesArray from "../../../data/baseTiles.js";
 
 interface TileProps {
 	id?: number; //pas olbigé d'exister dans l'objet de ce type, ou pas obligé d'être passé en prop

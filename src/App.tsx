@@ -1,54 +1,51 @@
-import "./App.css";
+import { useState } from "react";
 
 import BaseTile from "./components/base/base_tiles/BaseTile";
+import RandomButton from "./components/base/random_button/RandomButton";
 import baseTilesArray from "./data/baseTiles.js";
+import { randomId } from "./utils/utils.js";
+
+import "./App.css";
 
 function App() {
-	const testId = 6;
-	const aleatoireTile = baseTilesArray.find((tile) => tile.id === testId);
-	//faire un usestate à la place de la variable
+	const [usedId, setUsedId] = useState<number[]>([]);
 
-	//TypeScript a besoin d'etre sur que la cible existe, il aime pas ça avec find
-	//TypeScript ne peut pas savoir à la compilation si l'id 6 existe dans ton tableau. Donc il te force à gérer le cas où rien n'est trouvé.
+	function drawRandomTiles() {
+		const minId = baseTilesArray[0].id;
+		const maxId = baseTilesArray[baseTilesArray.length - 1].id;
 
-	if (!aleatoireTile) {
-		return <p>Tile not found !</p>;
-	} else
-		return (
-			/* 		<section>
-			{baseTilesArray.map((tile) => (
+		const randomIdArray = randomId(minId, maxId, usedId);
+		//A REVOIR !!
+
+		//tri des id par ordre croissant
+		const randomIdSorted = randomIdArray.sort((a, b) => a - b);
+
+		//récupérer les 4 tiles dont l'id correspond
+		const nextTilesToPlay = baseTilesArray.filter((tile) =>
+			randomIdArray.includes(tile.id),
+		);
+		setUsedId(randomIdSorted);
+		//mettre a jour le state used pour exclure les id des prochains tirages et descendre en props ces memes id pour actualiser afficha de basetiles</>
+	}
+	return (
+		<section>
+			<RandomButton onDraw={drawRandomTiles} />
+
+			{nextTilesToPlay.map((nextTile) => (
 				<BaseTile
-					key={tile.id}
-					id={tile.id}
-					imgSrcRecto={tile.imgSrcRecto}
-					imgSrcVerso={tile.imgSrcVerso}
-					left={tile.left}
-					right={tile.right}
+					key={nextTile.id}
+					id={nextTile.id}
+					imgSrcRecto={nextTile.imgSrcRecto}
+					imgSrcVerso={nextTile.imgSrcVerso}
+					left={nextTile.left}
+					right={nextTile.right}
 				/>
 			))}
-
-		</section> */
-			<BaseTile
-				id={aleatoireTile.id}
-				imgSrcRecto={aleatoireTile.imgSrcRecto}
-				imgSrcVerso={aleatoireTile.imgSrcVerso}
-				left={aleatoireTile.left}
-				right={aleatoireTile.right}
-			/>
-		);
+		</section>
+	);
 }
 
 //balise-composant tout est inventé : le nom de la balise et les attributs
 //c'est là que je mets le nom du props
 
 export default App;
-
-/* const minId = baseTilesArray[0].id;
-const maxId = baseTilesArray[baseTilesArray.length - 1].id; 
-
-function randomId(min, max) {
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-randomId(minId, maxId);
- */
