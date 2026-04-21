@@ -24,7 +24,7 @@ function App() {
 		const nextTilesToPlay = baseTilesArray.filter((tile) =>
 			randomIdArray.includes(tile.id),
 		);
-		setUsedId(randomIdSorted);
+		setUsedId(...prev, ...randomIdSorted);
 		//mettre a jour le state used pour exclure les id des prochains tirages et descendre en props ces memes id pour actualiser afficha de basetiles</>
 	}
 	return (
