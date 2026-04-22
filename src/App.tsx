@@ -2,20 +2,25 @@ import { useState } from "react";
 
 import BaseTile from "./components/base/base_tiles/BaseTile";
 import RandomButton from "./components/base/random_button/RandomButton";
-import baseTilesArray from "./data/baseTiles.js";
+import baseTilesArray from "./data/baseTiles.js"; //future api
 import { randomId } from "./utils/utils.js";
-
+import DrawRandomTiles from "./components/base/random_button/DrawRandomTiles.js";
 import "./App.css";
 
 function App() {
-	const [usedId, setUsedId] = useState<number[]>([]);
+	const minId = baseTilesArray[0].id;
+	const maxId = baseTilesArray[baseTilesArray.length - 1].id;
 
-	function drawRandomTiles() {
-		const minId = baseTilesArray[0].id;
-		const maxId = baseTilesArray[baseTilesArray.length - 1].id;
+	const allIds = new Array<number>(maxId);
+	for (let i = minId; i <= maxId; i++) {
+		allIds.push(i);
+	}
+	const [usedIds, setUsedIds] = useState<number[]>([]);
+	const [availableIds, setAvailableIds] = useState<number[]>(allIds);
+	const [nextTilesToPlay, setNextTilesToPlay] = useState<>();    ///   attention contient des base tiles
 
-		const randomIdArray = randomId(minId, maxId, usedId);
-		//A REVOIR !!
+	/* function DrawFourTiles(available: number[]) {
+		const randomIdArray = randomId(available);
 
 		//tri des id par ordre croissant
 		const randomIdSorted = randomIdArray.sort((a, b) => a - b);
@@ -24,23 +29,19 @@ function App() {
 		const nextTilesToPlay = baseTilesArray.filter((tile) =>
 			randomIdArray.includes(tile.id),
 		);
-		setUsedId(...prev, ...randomIdSorted);
-		//mettre a jour le state used pour exclure les id des prochains tirages et descendre en props ces memes id pour actualiser afficha de basetiles</>
-	}
+
+		//mettre a jour les states used pour exclure les id des prochains tirages
+		setUsedIds(...prev, ...randomIdSorted);
+		const newAvailableIds = allIds.filter((id) => !usedIds.includes(id));
+		setAvailableIds(newAvailableIds);
+
+		return fourTiles
+	} */
 	return (
 		<section>
-			<RandomButton onDraw={drawRandomTiles} />
+			<RandomButton onDraw={DrawFourTiles(availableIds)} />
 
-			{nextTilesToPlay.map((nextTile) => (
-				<BaseTile
-					key={nextTile.id}
-					id={nextTile.id}
-					imgSrcRecto={nextTile.imgSrcRecto}
-					imgSrcVerso={nextTile.imgSrcVerso}
-					left={nextTile.left}
-					right={nextTile.right}
-				/>
-			))}
+			<NextTiles props = nextTilesToPlay/>
 		</section>
 	);
 }
@@ -49,3 +50,4 @@ function App() {
 //c'est là que je mets le nom du props
 
 export default App;
+

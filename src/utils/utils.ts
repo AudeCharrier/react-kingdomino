@@ -1,56 +1,34 @@
-const usedId = [1, 5, 48, 13];
-const min = 1;
-const max = 48;
+//dans utils
 
-/* const allIds = Array.from({ length: max - min + 1 }, (_, i) => i + min);
- */ //taille : 48 , mapping intégré : il prend la valeur de la case d'index i (_, i) et il la remplace par i+min
-
-const allIds = new Array(max);
-for (let i = min; i <= max; i++) {
-	allIds.push(i);
-}
-
-const availableIds = allIds.filter((id) => !usedId.includes(id));
-
-//générer 4 id aléatoires
-
-export function randomId(min, max, available, used) {
+export function randomId(available) {
 	const randomIdArray = new Array(4);
 
 	for (let i = 0; i < randomIdArray.length; i++) {
-		let randomIndex = Math.floor(Math.random() * available.length); //prend entre 0 et length (48)
-		while (randomIdArray.includes(available[randomIndex])) {
-			randomIndex = Math.floor(Math.random() * available.length);
-		}
-
+		const randomIndex = Math.floor(Math.random() * available.length); //prend entre 0 et length (48)
 		randomIdArray[i] = available[randomIndex];
+		//je dois virer l'id de available MTN or je suis dans utils.ts -> je le fais avec usestate ou avec slice ?
 	}
 	return randomIdArray;
 }
 
-/* export function randomId(min, max, usedId) {
-	const randomIdArray = new Array(4); // créer array de taille 4
-	for (let i = 0; i < randomIdArray.length; i++) {
-		randomIdArray[i] = Math.floor(Math.random() * (max - min + 1)) + min;
-		while (usedId.includes(randomIdArray[i])) {
-			randomIdArray[i] = Math.floor(Math.random() * (max - min + 1)) + min
-		}
-	}
-	return randomIdArray;
+//dans app
+function DrawFourTiles(available: number[]) {
+	const randomIdArray = randomId(available);
+
+	//tri des id par ordre croissant
+	const randomIdSorted = randomIdArray.sort((a, b) => a - b);
+
+	//récupérer les 4 tiles dont l'id correspond
+	const fourTilesToPlay = baseTilesArray.filter((tile) =>
+		randomIdArray.includes(tile.id),
+	);
+
+	//mettre a jour les states used pour exclure les id des prochains tirages : QUAND ?
+	setUsedIds(...prev, ...randomIdSorted);
+	const newAvailableIds = allIds.filter((id) => !usedIds.includes(id));
+	setAvailableIds(newAvailableIds);
+
+	setFourTilesToPlay(fourTilesToPlay);
+
+	return fourTilesToPlay;
 }
- */
-
-/* 
-if (randomIdArray.includes(available[randomIndex])) {
-
-		} else {
-			randomIdArray[i] = available[randomIndex]
-		} */
-
-console.log(randomId(min, max, usedId));
-
-//récupérer les 4 tiles dont l'id correspond
-/* const nextTilesToPlay = baseTilesArray.filter((tile) =>
-	randomIdArray.includes(tile.id),
-);
- */
