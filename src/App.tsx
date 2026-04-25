@@ -1,54 +1,92 @@
+import { useState } from "react";
+/* import BaseTile from "./components/base/base_tiles/BaseTile";
+ */ import RandomButton from "./components/base/random_button/RandomButton";
+import baseTilesArray from "./data/baseTiles.js"; //future api
+/* import { randomId } from "./utils/utils.js";*/
+import DrawRandomTiles from "./components/base/random_button/DrawRandomTiles.js";
+
 import "./App.css";
 
-import BaseTile from "./components/base/base_tiles/BaseTile";
-import baseTilesArray from "./data/baseTiles.js";
+interface TileProps {
+	id?: number; //pas olbigé d'exister dans l'objet de ce type, ou pas obligé d'être passé en prop
+	imgSrcRecto: string;
+	imgSrcVerso?: string;
 
-function App() {
-	const testId = 6;
-	const aleatoireTile = baseTilesArray.find((tile) => tile.id === testId);
-	//faire un usestate à la place de la variable
-
-	//TypeScript a besoin d'etre sur que la cible existe, il aime pas ça avec find
-	//TypeScript ne peut pas savoir à la compilation si l'id 6 existe dans ton tableau. Donc il te force à gérer le cas où rien n'est trouvé.
-
-	if (!aleatoireTile) {
-		return <p>Tile not found !</p>;
-	} else
-		return (
-			/* 		<section>
-			{baseTilesArray.map((tile) => (
-				<BaseTile
-					key={tile.id}
-					id={tile.id}
-					imgSrcRecto={tile.imgSrcRecto}
-					imgSrcVerso={tile.imgSrcVerso}
-					left={tile.left}
-					right={tile.right}
-				/>
-			))}
-
-		</section> */
-			<BaseTile
-				id={aleatoireTile.id}
-				imgSrcRecto={aleatoireTile.imgSrcRecto}
-				imgSrcVerso={aleatoireTile.imgSrcVerso}
-				left={aleatoireTile.left}
-				right={aleatoireTile.right}
-			/>
-		);
+	left: {
+		landscape: string;
+		flames: number;
+		volcanoFire?: number;
+		resource?: string;
+		alt: string;
+	};
+	right: {
+		landscape: string;
+		flames: number;
+		volcanoFire?: number;
+		resource?: string;
+		alt: string;
+	};
 }
 
-//balise-composant tout est inventé : le nom de la balise et les attributs
-//c'est là que je mets le nom du props
+const minId = baseTilesArray[0].id;
+const maxId = baseTilesArray[baseTilesArray.length - 1].id;
+
+const allIds: number[] = [];
+for (let i = minId; i <= maxId; i++) {
+	allIds.push(i);
+}
+function App() {
+	const [usedIds, setUsedIds] = useState<number[]>([]);
+	const [availableIds, setAvailableIds] = useState<number[]>(allIds);
+	const [nextTilesToPlay, setNextTilesToPlay] = useState<TileProps[]>([]); ///   attention contient des base tiles
+
+	function randomId(available: number[]) {
+		const remaining = [...available];
+		const randomIdsArray: number[] = [];
+
+		for (let i = 0; i < 4; i++) {
+			const randomIndex = Math.floor(Math.random() * remaining.length); //prend entre 0 et length (48)
+			randomIdsArray[i] = remaining[randomIndex];
+			remaining.splice(randomIndex, 1);
+			//je dois actualiser le tableau des id availabel pour la prochaine boucle (mais le state est pas encore à jour)
+		}
+		console.log("ids tirés :", randomIdsArray);
+		return randomIdsArray;
+	}
+
+	//la fonction appelée à l'event gère le sstates à la fin
+	function DrawFourTiles(available: number[]) {
+		const randomIdsArray = randomId(available);
+
+		//tri des id par ordre croissant
+		const randomIdsSorted = randomIdsArray.sort((a, b) => a - b);
+
+		//récupérer les 4 tiles dont l'id correspond
+		const nextTilesToPlay = baseTilesArray.filter((tile) =>
+			randomIdsSorted.includes(tile.id),
+		);
+
+		//mettre a jour les states used pour exclure les id des prochains tirages
+		//en passant par une valeur intermédiaire, parce que les state se mettreont à jour APRES le render
+		const newUsedIds = [...usedIds, ...randomIdsSorted];
+		setUsedIds(newUsedIds);
+		const newAvailableIds = allIds.filter((id) => !newUsedIds.includes(id));
+		setAvailableIds(newAvailableIds);
+		setNextTilesToPlay(nextTilesToPlay);
+
+		return nextTilesToPlay;
+	}
+
+	return (
+		<section>
+			<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
+
+			<DrawRandomTiles nextTiles={nextTilesToPlay} />
+		</section>
+	);
+}
 
 export default App;
 
-/* const minId = baseTilesArray[0].id;
-const maxId = baseTilesArray[baseTilesArray.length - 1].id; 
-
-function randomId(min, max) {
-	return Math.floor(Math.random() * (max - min + 1)) + min;
-}
-
-randomId(minId, maxId);
- */
+//tirer une branche depuis dev pour faire le composant fourtiles (i.e. drawrandomtiles) + css placement et taille
+//tirer une branche pour composant grid zone de jeu (mapper une div bordered et gérer le placement avec grid-template-area ?)
