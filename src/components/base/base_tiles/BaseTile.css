@@ -1,8 +1,8 @@
 .img-container {
 	display: flex;
 	flex-direction: row;
-	width: 400px;
-	height: 195px;
+	width: 150px;
+	height: 75px;
 }
 
 .left-tile {

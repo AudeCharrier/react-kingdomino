@@ -1,0 +1,20 @@
+.kingdo-header {
+	width: auto;
+	height: 2rem;
+}
+
+.draw-tiles {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: flex-start;
+	gap: 30px;
+}
+
+.four-tiles-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	gap: 10px;
+}
