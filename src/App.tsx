@@ -1,8 +1,7 @@
 import { useState } from "react";
-/* import BaseTile from "./components/base/base_tiles/BaseTile";
- */ import RandomButton from "./components/base/random_button/RandomButton";
+import RandomButton from "./components/base/random_button/RandomButton";
 import baseTilesArray from "./data/baseTiles.js"; //future api
-/* import { randomId } from "./utils/utils.js";*/
+import PlayGrid from "./components/base/play_grid/PlayGrid.js";
 import DrawRandomTiles from "./components/base/random_button/DrawRandomTiles.js";
 
 import "./App.css";
@@ -78,11 +77,16 @@ function App() {
 	}
 
 	return (
-		<section>
-			<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
+		<body>
+			<section>
+				<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
 
-			<DrawRandomTiles nextTiles={nextTilesToPlay} />
-		</section>
+				<DrawRandomTiles nextTiles={nextTilesToPlay} />
+			</section>
+			<section className="section-play">
+				<PlayGrid />
+			</section>
+		</body>
 	);
 }
 
