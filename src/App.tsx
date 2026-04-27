@@ -2,6 +2,7 @@ import { useState } from "react";
 import baseTilesArray from "./data/baseTiles.js"; //future api
 import FourTiles from "./components/base/four_tiles/FourTiles";
 import RandomButton from "./components/base/random_button/RandomButton";
+/*faire un import types */
 
 import "./App.css";
 
@@ -81,9 +82,8 @@ function App() {
 
 			<section className="draw-tiles">
 				<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
-				<div className="four-tiles-container">
-					<FourTiles nextTiles={nextTilesToPlay} />
-				</div>
+
+				<FourTiles nextTiles={nextTilesToPlay} />
 			</section>
 		</>
 	);

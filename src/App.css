@@ -10,11 +10,3 @@
 	align-items: flex-start;
 	gap: 30px;
 }
-
-.four-tiles-container {
-	display: flex;
-	flex-direction: column;
-	justify-content: center;
-	align-items: flex-start;
-	gap: 10px;
-}

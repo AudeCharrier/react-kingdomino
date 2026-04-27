@@ -1,5 +1,3 @@
-/* import baseTilesArray from "../../../data/baseTiles"; */
-
 interface RandomButtonProps {
 	onDraw: () => void;
 }

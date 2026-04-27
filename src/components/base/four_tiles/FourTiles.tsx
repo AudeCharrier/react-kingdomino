@@ -1,4 +1,5 @@
 import BaseTile from "../base_tiles/BaseTile";
+import "./FourTiles.css";
 
 interface TileProps {
 	id?: number; //pas olbigé d'exister dans l'objet de ce type, ou pas obligé d'être passé en prop
@@ -27,7 +28,7 @@ interface NextTilesProps {
 
 function FourTiles({ nextTiles }: NextTilesProps) {
 	return (
-		<>
+		<div className="four-tiles-container">
 			{nextTiles.map((nextTile) => (
 				<BaseTile
 					key={nextTile.id}
@@ -38,7 +39,7 @@ function FourTiles({ nextTiles }: NextTilesProps) {
 					right={nextTile.right}
 				/>
 			))}
-		</>
+		</div>
 	);
 }
 
