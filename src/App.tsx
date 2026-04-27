@@ -104,5 +104,4 @@ function App() {
 
 export default App;
 
-//movebutton : je peux écrire direct les states dans onmove, est ce que ça supprime le pb asynchrone?
-//si mauvaise manip d'un joueur ?? 2*move ?..... comment annuler le dernier coup ?
+//si mauvaise manip d'un joueur ?? 2*move ?..... comment annuler le dernier coup
