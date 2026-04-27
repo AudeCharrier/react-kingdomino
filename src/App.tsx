@@ -1,9 +1,8 @@
 import { useState } from "react";
-/* import BaseTile from "./components/base/base_tiles/BaseTile";
- */ import RandomButton from "./components/base/random_button/RandomButton";
 import baseTilesArray from "./data/baseTiles.js"; //future api
-/* import { randomId } from "./utils/utils.js";*/
-import DrawRandomTiles from "./components/base/random_button/DrawRandomTiles.js";
+import FourTiles from "./components/base/four_tiles/FourTiles";
+import RandomButton from "./components/base/random_button/RandomButton";
+/*faire un import types */
 
 import "./App.css";
 
@@ -78,15 +77,18 @@ function App() {
 	}
 
 	return (
-		<section>
-			<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
+		<>
+			<header className="kingdo-header"></header>
 
-			<DrawRandomTiles nextTiles={nextTilesToPlay} />
-		</section>
+			<section className="draw-tiles">
+				<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
+
+				<FourTiles nextTiles={nextTilesToPlay} />
+			</section>
+		</>
 	);
 }
 
 export default App;
 
-//tirer une branche depuis dev pour faire le composant fourtiles (i.e. drawrandomtiles) + css placement et taille
 //tirer une branche pour composant grid zone de jeu (mapper une div bordered et gérer le placement avec grid-template-area ?)
