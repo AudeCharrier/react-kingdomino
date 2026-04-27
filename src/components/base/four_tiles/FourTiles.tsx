@@ -23,20 +23,20 @@ interface TileProps {
 }
 
 interface NextTilesProps {
-	nextTiles: TileProps[];
+	tiles: TileProps[];
 }
 
-function FourTiles({ nextTiles }: NextTilesProps) {
+function FourTiles({ tiles }: NextTilesProps) {
 	return (
 		<div className="four-tiles-container">
-			{nextTiles.map((nextTile) => (
+			{tiles.map((tile) => (
 				<BaseTile
-					key={nextTile.id}
-					id={nextTile.id}
-					imgSrcRecto={nextTile.imgSrcRecto}
-					imgSrcVerso={nextTile.imgSrcVerso}
-					left={nextTile.left}
-					right={nextTile.right}
+					key={tile.id}
+					id={tile.id}
+					imgSrcRecto={tile.imgSrcRecto}
+					imgSrcVerso={tile.imgSrcVerso}
+					left={tile.left}
+					right={tile.right}
 				/>
 			))}
 		</div>
