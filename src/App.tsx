@@ -1,6 +1,7 @@
 import { useState } from "react";
 import baseTilesArray from "./data/baseTiles.js"; //future api
 import FourTiles from "./components/base/four_tiles/FourTiles";
+import MoveButton from "./components/base/move_button/MoveButton.js";
 import RandomButton from "./components/base/random_button/RandomButton";
 /*faire un import types */
 
@@ -37,7 +38,8 @@ for (let i = minId; i <= maxId; i++) {
 function App() {
 	const [usedIds, setUsedIds] = useState<number[]>([]);
 	const [availableIds, setAvailableIds] = useState<number[]>(allIds);
-	const [nextTilesToPlay, setNextTilesToPlay] = useState<TileProps[]>([]); ///   attention contient des base tiles
+	const [nextTiles, setNextTiles] = useState<TileProps[]>([]); ///   attention contient des base tiles
+	const [currentTiles, setCurrentTiles] = useState<TileProps[]>([]);
 
 	function randomId(available: number[]) {
 		const remaining = [...available];
@@ -61,7 +63,7 @@ function App() {
 		const randomIdsSorted = randomIdsArray.sort((a, b) => a - b);
 
 		//récupérer les 4 tiles dont l'id correspond
-		const nextTilesToPlay = baseTilesArray.filter((tile) =>
+		const nextTiles = baseTilesArray.filter((tile) =>
 			randomIdsSorted.includes(tile.id),
 		);
 
@@ -71,9 +73,17 @@ function App() {
 		setUsedIds(newUsedIds);
 		const newAvailableIds = allIds.filter((id) => !newUsedIds.includes(id));
 		setAvailableIds(newAvailableIds);
-		setNextTilesToPlay(nextTilesToPlay);
+		setNextTiles(nextTiles);
 
-		return nextTilesToPlay;
+		return nextTiles;
+	}
+
+	function MoveTiles() {
+		const newCurrent = nextTiles;
+		setCurrentTiles(newCurrent);
+		const newNext: TileProps[] = [];
+		setNextTiles(newNext);
+		return;
 	}
 
 	return (
@@ -81,9 +91,12 @@ function App() {
 			<header className="kingdo-header"></header>
 
 			<section className="draw-tiles">
-				<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
-
-				<FourTiles nextTiles={nextTilesToPlay} />
+				<div className="buttons-and-meeples">
+					<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
+					<MoveButton onMove={() => MoveTiles()} />
+				</div>
+				<FourTiles tiles={nextTiles} />
+				<FourTiles tiles={currentTiles} />
 			</section>
 		</>
 	);
@@ -91,4 +104,4 @@ function App() {
 
 export default App;
 
-//tirer une branche pour composant grid zone de jeu (mapper une div bordered et gérer le placement avec grid-template-area ?)
+//si mauvaise manip d'un joueur ?? 2*move ?..... comment annuler le dernier coup

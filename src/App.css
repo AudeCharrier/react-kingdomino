@@ -10,3 +10,11 @@
 	align-items: flex-start;
 	gap: 30px;
 }
+
+.buttons-and-meeples {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 20px;
+}
