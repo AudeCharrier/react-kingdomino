@@ -1,13 +1,23 @@
-body {
-	margin: 0;
-	padding: 0;
-	box-sizing: border-box;
+.kingdo-header {
+	width: auto;
+	height: 2rem;
 }
 
-/* .section {
-	color: white;
-} */
+.draw-tiles {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	align-items: flex-start;
+	gap: 30px;
+}
 
+.buttons-and-meeples {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: center;
+	gap: 20px;
+}
 .section-play {
 	display: flex;
 	flex-direction: column;
