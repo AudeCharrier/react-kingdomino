@@ -18,3 +18,9 @@
 	align-items: center;
 	gap: 20px;
 }
+.section-play {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-end;
+}

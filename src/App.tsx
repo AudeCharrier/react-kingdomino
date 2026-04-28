@@ -1,8 +1,10 @@
 import { useState } from "react";
+import RandomButton from "./components/base/random_button/RandomButton";
 import baseTilesArray from "./data/baseTiles.js"; //future api
+import PlayGrid from "./components/base/play_grid/PlayGrid.js";
 import FourTiles from "./components/base/four_tiles/FourTiles";
 import MoveButton from "./components/base/move_button/MoveButton.js";
-import RandomButton from "./components/base/random_button/RandomButton";
+
 /*faire un import types */
 
 import "./App.css";
@@ -87,9 +89,8 @@ function App() {
 	}
 
 	return (
-		<>
+		<main>
 			<header className="kingdo-header"></header>
-
 			<section className="draw-tiles">
 				<div className="buttons-and-meeples">
 					<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
@@ -98,7 +99,11 @@ function App() {
 				<FourTiles tiles={nextTiles} />
 				<FourTiles tiles={currentTiles} />
 			</section>
-		</>
+
+			<section className="section-play">
+				<PlayGrid />
+			</section>
+		</main>
 	);
 }
 

@@ -1,0 +1,18 @@
+.play-grid {
+	display: grid;
+	grid-template-columns: repeat(7, 1fr);
+	grid-template-rows: repeat(7, 1fr);
+	border: 2px solid red;
+	width: max-content;
+	height: auto;
+	gap: 0;
+}
+
+.cell-play-grid {
+	background-color: white;
+	border: 1px solid black;
+	width: 75px; /*ameliorer en img-width/2 */
+	aspect-ratio: 1 / 1;
+}
+
+/*couleurs : pour tester l'affichage grid*/
