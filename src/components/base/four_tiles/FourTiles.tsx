@@ -1,3 +1,4 @@
+import { useState } from "react";
 import BaseTile from "../base_tiles/BaseTile";
 import "./FourTiles.css";
 
@@ -27,20 +28,70 @@ interface NextTilesProps {
 }
 
 function FourTiles({ tiles }: NextTilesProps) {
+	const [tilePosition, setTilePosition] = useState({ left: 0, top: 0 });
+	const [dragged, setDragged] = useState<TileProps>();
+
+	const visibilityTrueTile = {
+		visibility: dragged ? "hidden" : "visible",
+	};
+	function PlayerMoveTile(e, tile) {
+		const positionX = e.clientX;
+		const positionY = e.clientY;
+		setDragged(tile);
+		setTilePosition({ left: positionX, top: positionY });
+		return;
+	}
 	return (
-		<div className="four-tiles-container">
-			{tiles.map((tile) => (
+		<>
+			<div className="four-tiles-container">
+				{tiles.map((tile) => (
+					/*désactiver biome*/
+					<div
+						onMouseDown={(e) => PlayerMoveTile(e, tile)}
+						style={visibilityTrueTile}
+					>
+						<BaseTile
+							key={tile.id}
+							id={tile.id}
+							imgSrcRecto={tile.imgSrcRecto}
+							left={tile.left}
+							right={tile.right}
+						/>
+					</div>
+				))}
+			</div>
+			{dragged && (
 				<BaseTile
-					key={tile.id}
-					id={tile.id}
-					imgSrcRecto={tile.imgSrcRecto}
-					imgSrcVerso={tile.imgSrcVerso}
-					left={tile.left}
-					right={tile.right}
+					id={dragged.id}
+					imgSrcRecto={dragged.imgSrcRecto}
+					left={dragged.left}
+					right={dragged.right}
+					style={{
+						position: "fixed",
+						left: tilePosition.left,
+						top: tilePosition.top,
+						pointerEvents: "none",
+					}}
 				/>
-			))}
-		</div>
+			)}
+		</>
 	);
 }
 
 export default FourTiles;
+
+//onmousedown
+//récup en event la position du pointeur
+//actualiser position de départ tuile
+
+//on mouse move
+//créer un ghost
+//hidden l'original
+//recup infos pointeur
+//le passer en state au ghost
+
+/*sur app
+onmousemove : 
+récup e -> settileposition avec e
+
+onmouseup : setdragged(false)   mais et l'original alors ??*/

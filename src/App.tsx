@@ -80,7 +80,7 @@ function App() {
 		return nextTiles;
 	}
 
-	function MoveTiles() {
+	function MoveButtonTiles() {
 		const newCurrent = nextTiles;
 		setCurrentTiles(newCurrent);
 		const newNext: TileProps[] = [];
@@ -94,7 +94,7 @@ function App() {
 			<section className="draw-tiles">
 				<div className="buttons-and-meeples">
 					<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
-					<MoveButton onMove={() => MoveTiles()} />
+					<MoveButton onMove={() => MoveButtonTiles()} />
 				</div>
 				<FourTiles tiles={nextTiles} />
 				<FourTiles tiles={currentTiles} />

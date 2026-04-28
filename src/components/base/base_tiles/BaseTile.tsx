@@ -20,10 +20,10 @@ interface TileProps {
 		alt: string;
 	};
 }
-
+//ajouter style en props ?
 function BaseTile(props: TileProps) {
 	return (
-		<div className="img-container" id={String(props.id)}>
+		<div className="img-container" id={String(props.id)} style={style}>
 			<img
 				src={props.imgSrcRecto}
 				alt={props.left.alt}
