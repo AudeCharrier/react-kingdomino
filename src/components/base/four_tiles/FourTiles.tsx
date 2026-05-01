@@ -1,5 +1,7 @@
 import { useState } from "react";
 import BaseTile from "../base_tiles/BaseTile";
+import { useDrag } from "../../../contexts/DragContext";
+import type React from "react";
 import "./FourTiles.css";
 
 interface TileProps {
@@ -21,60 +23,44 @@ interface TileProps {
 		resource?: string;
 		alt: string;
 	};
+	style?: React.CSSProperties;
 }
 
 interface NextTilesProps {
 	tiles: TileProps[];
 }
 
-function FourTiles({ tiles }: NextTilesProps) {
-	const [tilePosition, setTilePosition] = useState({ left: 0, top: 0 });
-	const [dragged, setDragged] = useState<TileProps>();
+function FourTiles({
+	tiles,
+	draggable,
+}: NextTilesProps & { draggable: boolean }) {
+	const { dragged, setDragged, setTilePosition } = useDrag();
 
-	const visibilityTrueTile = {
-		visibility: dragged ? "hidden" : "visible",
-	};
-	function PlayerMoveTile(e, tile) {
+	function PlayerMoveTile(e: React.MouseEvent, tile: TileProps) {
 		const positionX = e.clientX;
 		const positionY = e.clientY;
 		setDragged(tile);
 		setTilePosition({ left: positionX, top: positionY });
 		return;
 	}
+
 	return (
-		<>
-			<div className="four-tiles-container">
-				{tiles.map((tile) => (
-					/*désactiver biome*/
-					<div
-						onMouseDown={(e) => PlayerMoveTile(e, tile)}
-						style={visibilityTrueTile}
-					>
-						<BaseTile
-							key={tile.id}
-							id={tile.id}
-							imgSrcRecto={tile.imgSrcRecto}
-							left={tile.left}
-							right={tile.right}
-						/>
-					</div>
-				))}
-			</div>
-			{dragged && (
-				<BaseTile
-					id={dragged.id}
-					imgSrcRecto={dragged.imgSrcRecto}
-					left={dragged.left}
-					right={dragged.right}
-					style={{
-						position: "fixed",
-						left: tilePosition.left,
-						top: tilePosition.top,
-						pointerEvents: "none",
-					}}
-				/>
-			)}
-		</>
+		<div className="four-tiles-container">
+			{tiles.map((tile) => (
+				<div
+					key={tile.id}
+					onMouseDown={draggable ? (e) => PlayerMoveTile(e, tile) : undefined}
+					style={{ visibility: dragged?.id === tile.id ? "hidden" : "visible" }}
+				>
+					<BaseTile
+						id={tile.id}
+						imgSrcRecto={tile.imgSrcRecto}
+						left={tile.left}
+						right={tile.right}
+					/>
+				</div>
+			))}
+		</div>
 	);
 }
 
@@ -94,4 +80,17 @@ export default FourTiles;
 onmousemove : 
 récup e -> settileposition avec e
 
+//onMouseMove={(e) =>MovePositionTile(e)}
+
+
+	function MovePositionTile(e: React.MouseEvent) {
+		if(!dragged) {
+		return
+		}
+		else {
+		const positionX = e.clientX;
+		const positionY = e.clientY;
+		setTilePosition({ left: positionX, top: positionY });
+		return;
+	}
 onmouseup : setdragged(false)   mais et l'original alors ??*/

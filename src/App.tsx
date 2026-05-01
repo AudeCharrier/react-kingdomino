@@ -1,10 +1,12 @@
 import { useState } from "react";
 import RandomButton from "./components/base/random_button/RandomButton";
 import baseTilesArray from "./data/baseTiles.js"; //future api
+import { DragProvider, useDrag } from "./contexts/DragContext";
 import PlayGrid from "./components/base/play_grid/PlayGrid.js";
 import FourTiles from "./components/base/four_tiles/FourTiles";
 import MoveButton from "./components/base/move_button/MoveButton.js";
-
+import type { CSSProperties } from "react";
+import BaseTile from "./components/base/base_tiles/BaseTile";
 /*faire un import types */
 
 import "./App.css";
@@ -28,8 +30,8 @@ interface TileProps {
 		resource?: string;
 		alt: string;
 	};
+	style?: CSSProperties;
 }
-
 const minId = baseTilesArray[0].id;
 const maxId = baseTilesArray[baseTilesArray.length - 1].id;
 
@@ -38,6 +40,7 @@ for (let i = minId; i <= maxId; i++) {
 	allIds.push(i);
 }
 function App() {
+	const { dragged, tilePosition, setTilePosition } = useDrag();
 	const [usedIds, setUsedIds] = useState<number[]>([]);
 	const [availableIds, setAvailableIds] = useState<number[]>(allIds);
 	const [nextTiles, setNextTiles] = useState<TileProps[]>([]); ///   attention contient des base tiles
@@ -57,7 +60,7 @@ function App() {
 		return randomIdsArray;
 	}
 
-	//la fonction appelée à l'event gère le sstates à la fin
+	//la fonction appelée à l'event gère les states à la fin
 	function DrawFourTiles(available: number[]) {
 		const randomIdsArray = randomId(available);
 
@@ -87,26 +90,53 @@ function App() {
 		setNextTiles(newNext);
 		return;
 	}
+	function MoveGhostTile(e: React.MouseEvent) {
+		if (!dragged) {
+			return;
+		} else {
+			const positionX = e.clientX;
+			const positionY = e.clientY;
+			setTilePosition({ left: positionX, top: positionY });
+			return;
+		}
+	}
 
 	return (
-		<main>
+		<main onMouseMove={(e) => MoveGhostTile(e)}>
 			<header className="kingdo-header"></header>
 			<section className="draw-tiles">
 				<div className="buttons-and-meeples">
 					<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
 					<MoveButton onMove={() => MoveButtonTiles()} />
 				</div>
-				<FourTiles tiles={nextTiles} />
-				<FourTiles tiles={currentTiles} />
+				<FourTiles tiles={nextTiles} draggable={false} />
+				<FourTiles tiles={currentTiles} draggable={true} />
 			</section>
 
 			<section className="section-play">
 				<PlayGrid />
 			</section>
+			{dragged && (
+				<BaseTile
+					id={dragged.id}
+					imgSrcRecto={dragged.imgSrcRecto}
+					left={dragged.left}
+					right={dragged.right}
+					style={{
+						position: "fixed",
+						left: tilePosition.left,
+						top: tilePosition.top,
+						pointerEvents: "none",
+						zIndex: 1,
+					}}
+				/>
+			)}
 		</main>
 	);
 }
 
 export default App;
 
-//si mauvaise manip d'un joueur ?? 2*move ?..... comment annuler le dernier coup
+//draggable : pour activer la fonction de drag&drop seulement sur les current tiles
+//si mauvaise manip d'un joueur ?? 2*move ?..... comment annuler le dernier coup ? avec localstroage ?
+//revoir la syntaxe des set (prev => blabla) DANS TOUS LES FICHIERS

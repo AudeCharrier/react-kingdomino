@@ -1,5 +1,7 @@
 import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
+import { DragProvider } from "./contexts/DragContext";
+
 import "./index.css";
 import App from "./App.tsx";
 
@@ -11,6 +13,8 @@ if (rootElement == null) {
 
 createRoot(rootElement).render(
 	<StrictMode>
-		<App />
+		<DragProvider>
+			<App />
+		</DragProvider>
 	</StrictMode>,
 );

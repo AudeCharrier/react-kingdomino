@@ -1,3 +1,5 @@
+import type React from "react";
+
 import "./BaseTile.css";
 
 interface TileProps {
@@ -19,11 +21,12 @@ interface TileProps {
 		resource?: string;
 		alt: string;
 	};
+	style?: React.CSSProperties;
 }
-//ajouter style en props ?
+
 function BaseTile(props: TileProps) {
 	return (
-		<div className="img-container" id={String(props.id)} style={style}>
+		<div className="img-container" id={String(props.id)} style={props.style}>
 			<img
 				src={props.imgSrcRecto}
 				alt={props.left.alt}
