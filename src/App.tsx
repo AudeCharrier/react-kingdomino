@@ -1,7 +1,7 @@
 import { useState } from "react";
 import RandomButton from "./components/base/random_button/RandomButton";
 import baseTilesArray from "./data/baseTiles.js"; //future api
-import { DragProvider, useDrag } from "./contexts/DragContext";
+import { useDrag } from "./contexts/DragContext";
 import PlayGrid from "./components/base/play_grid/PlayGrid.js";
 import FourTiles from "./components/base/four_tiles/FourTiles";
 import MoveButton from "./components/base/move_button/MoveButton.js";
@@ -40,7 +40,8 @@ for (let i = minId; i <= maxId; i++) {
 	allIds.push(i);
 }
 function App() {
-	const { dragged, tilePosition, setTilePosition } = useDrag();
+	const { dragged, tilePosition, setTilePosition, rotation, rotate } =
+		useDrag();
 	const [usedIds, setUsedIds] = useState<number[]>([]);
 	const [availableIds, setAvailableIds] = useState<number[]>(allIds);
 	const [nextTiles, setNextTiles] = useState<TileProps[]>([]); ///   attention contient des base tiles
@@ -102,7 +103,10 @@ function App() {
 	}
 
 	return (
-		<main onMouseMove={(e) => MoveGhostTile(e)}>
+		<main
+			onMouseMove={(e) => MoveGhostTile(e)}
+			onContextMenu={(e) => e.preventDefault()}
+		>
 			<header className="kingdo-header"></header>
 			<section className="draw-tiles">
 				<div className="buttons-and-meeples">
@@ -117,19 +121,32 @@ function App() {
 				<PlayGrid />
 			</section>
 			{dragged && (
-				<BaseTile
-					id={dragged.id}
-					imgSrcRecto={dragged.imgSrcRecto}
-					left={dragged.left}
-					right={dragged.right}
+				<div
+					onContextMenu={(e) => {
+						e.preventDefault();
+						e.stopPropagation();
+						rotate();
+					}}
 					style={{
 						position: "fixed",
 						left: tilePosition.left,
 						top: tilePosition.top,
-						pointerEvents: "none",
+						pointerEvents: "auto",
 						zIndex: 1,
+						backgroundColor: "red",
 					}}
-				/>
+				>
+					<BaseTile
+						id={dragged.id}
+						imgSrcRecto={dragged.imgSrcRecto}
+						left={dragged.left}
+						right={dragged.right}
+						style={{
+							pointerEvents: "none",
+							transform: `rotate(${rotation}deg)`,
+						}}
+					/>
+				</div>
 			)}
 		</main>
 	);

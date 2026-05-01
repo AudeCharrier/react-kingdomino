@@ -27,6 +27,8 @@ interface DragContextType {
 	setDragged: (tile: TileProps | null) => void;
 	tilePosition: { left: number; top: number };
 	setTilePosition: (pos: { left: number; top: number }) => void;
+	rotation: number;
+	rotate: () => void;
 }
 
 const DragContext = createContext<DragContextType | null>(null);
@@ -37,10 +39,19 @@ export function DragProvider({ children }: { children: React.ReactNode }) {
 		left: number;
 		top: number;
 	}>({ left: 0, top: 0 });
+	const [rotation, setRotation] = useState(0);
+	const rotate = () => setRotation((r) => r + 90);
 
 	return (
 		<DragContext.Provider
-			value={{ dragged, setDragged, tilePosition, setTilePosition }}
+			value={{
+				dragged,
+				setDragged,
+				tilePosition,
+				setTilePosition,
+				rotation,
+				rotate,
+			}}
 		>
 			{children}
 		</DragContext.Provider>

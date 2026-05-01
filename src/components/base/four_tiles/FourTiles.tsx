@@ -49,7 +49,14 @@ function FourTiles({
 			{tiles.map((tile) => (
 				<div
 					key={tile.id}
-					onMouseDown={draggable ? (e) => PlayerMoveTile(e, tile) : undefined}
+					onMouseDown={
+						draggable
+							? (e) => {
+									if (e.button !== 0) return;
+									PlayerMoveTile(e, tile);
+								}
+							: undefined
+					}
 					style={{ visibility: dragged?.id === tile.id ? "hidden" : "visible" }}
 				>
 					<BaseTile
@@ -69,10 +76,10 @@ export default FourTiles;
 //onmousedown
 //récup en event la position du pointeur
 //actualiser position de départ tuile
-
-//on mouse move
 //créer un ghost
 //hidden l'original
+
+//on mouse move
 //recup infos pointeur
 //le passer en state au ghost
 
@@ -80,17 +87,10 @@ export default FourTiles;
 onmousemove : 
 récup e -> settileposition avec e
 
-//onMouseMove={(e) =>MovePositionTile(e)}
+//oncontextmenu = clic droit
+//on vérifie si c draggable (current tile) et si c'est la tuile qui a été dragged (donc sélectionnée)
 
-
-	function MovePositionTile(e: React.MouseEvent) {
-		if(!dragged) {
-		return
-		}
-		else {
-		const positionX = e.clientX;
-		const positionY = e.clientY;
-		setTilePosition({ left: positionX, top: positionY });
-		return;
-	}
 onmouseup : setdragged(false)   mais et l'original alors ??*/
+
+//if (e.button !== 0) return; : mousedown se déclenche au clic gauche et droit
+//button gauche = 0
