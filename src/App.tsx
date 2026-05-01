@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import RandomButton from "./components/base/random_button/RandomButton";
 import baseTilesArray from "./data/baseTiles.js"; //future api
 import { useDrag } from "./contexts/DragContext";
@@ -40,12 +40,21 @@ for (let i = minId; i <= maxId; i++) {
 	allIds.push(i);
 }
 function App() {
-	const { dragged, tilePosition, setTilePosition, rotation, rotate } =
-		useDrag();
+	const [rotation, setRotation] = useState<number>(0);
+	const rotate = () => setRotation((r) => r + 90);
+
+	const { dragged, setDragged, tilePosition, setTilePosition } = useDrag();
 	const [usedIds, setUsedIds] = useState<number[]>([]);
 	const [availableIds, setAvailableIds] = useState<number[]>(allIds);
 	const [nextTiles, setNextTiles] = useState<TileProps[]>([]); ///   attention contient des base tiles
 	const [currentTiles, setCurrentTiles] = useState<TileProps[]>([]);
+
+	const [snappedCell, setSnappedCell] = useState<{
+		left: number;
+		top: number;
+		cellIdLeft: string | null;
+		cellIdRight: string | null;
+	} | null>(null);
 
 	function randomId(available: number[]) {
 		const remaining = [...available];
@@ -91,21 +100,75 @@ function App() {
 		setNextTiles(newNext);
 		return;
 	}
-	function MoveGhostTile(e: React.MouseEvent) {
-		if (!dragged) {
-			return;
-		} else {
-			const positionX = e.clientX;
-			const positionY = e.clientY;
-			setTilePosition({ left: positionX, top: positionY });
-			return;
-		}
-	}
 
+	function handleMouseDown(e: React.MouseEvent, tile: TileProps) {
+		if (e.button !== 0) return;
+		e.preventDefault(); // désactiver le réflexe du navigateur qui va capter et interférer
+
+		//centrer le curseur sur la tuile
+		const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+		setDragged(tile);
+		setTilePosition({
+			left: e.clientX - rect.width / 2,
+			top: e.clientY - rect.height / 2,
+		});
+
+		const onMove = (ev: MouseEvent) => {
+			//garder le curseur centré au déplacement
+			setTilePosition({
+				left: ev.clientX - rect.width / 2,
+				top: ev.clientY - rect.height / 2,
+			});
+
+			//on détecte la rotation pour savoir si ce sera g/d ou h/b sur la grid
+			const isVertical = rotation % 180 !== 0;
+
+			//éléments les plus proches
+			const elLeft = !isVertical
+				? document.elementFromPoint(ev.clientX - 37.5, ev.clientY) //horiz g
+				: document.elementFromPoint(ev.clientX, ev.clientY - 37.5); //vert g
+			const elRight = !isVertical
+				? document.elementFromPoint(ev.clientX + 37.5, ev.clientY) //horiz d
+				: document.elementFromPoint(ev.clientX, ev.clientY + 37.5); //vert d
+
+			//voir la diff avec au dessus ?!
+			const cellLeft = elLeft?.closest(".cell-play-grid");
+			const cellRight = elRight?.closest(".cell-play-grid");
+
+			//on a trouvé les deux cellules
+			if (cellLeft && cellRight) {
+				const rectLeft = cellLeft.getBoundingClientRect(); //on prend les dimensions/positions d'une cellule
+				setSnappedCell({
+					left: rectLeft.left, //le ghost va prendre cette position
+					top: rectLeft.top,
+					cellIdLeft: cellLeft.getAttribute("data-cellId"), // claude a pas compris : c'est les props de la basetile qui doivent aller dans la grid
+					cellIdRight: cellRight.getAttribute("data-cellId"),
+				});
+			} else {
+				setSnappedCell(null);
+			}
+		};
+		/* 		const onMove = (ev: MouseEvent) => {
+			setTilePosition({ left: ev.clientX, top: ev.clientY });
+		}; */
+
+		const onUp = () => {
+			setDragged(null);
+			setRotation(0);
+			window.removeEventListener("mousemove", onMove);
+			window.removeEventListener("mouseup", onUp);
+		};
+
+		window.addEventListener("mousemove", onMove);
+		window.addEventListener("mouseup", onUp);
+	}
+	const ghostPos = snappedCell ?? tilePosition;
 	return (
 		<main
-			onMouseMove={(e) => MoveGhostTile(e)}
-			onContextMenu={(e) => e.preventDefault()}
+			tabIndex={0}
+			onKeyDown={(e) => {
+				if (e.key === "r" && dragged) rotate();
+			}}
 		>
 			<header className="kingdo-header"></header>
 			<section className="draw-tiles">
@@ -114,7 +177,11 @@ function App() {
 					<MoveButton onMove={() => MoveButtonTiles()} />
 				</div>
 				<FourTiles tiles={nextTiles} draggable={false} />
-				<FourTiles tiles={currentTiles} draggable={true} />
+				<FourTiles
+					tiles={currentTiles}
+					draggable={true}
+					onMouseDown={handleMouseDown}
+				/>
 			</section>
 
 			<section className="section-play">
@@ -122,18 +189,14 @@ function App() {
 			</section>
 			{dragged && (
 				<div
-					onContextMenu={(e) => {
-						e.preventDefault();
-						e.stopPropagation();
-						rotate();
-					}}
 					style={{
 						position: "fixed",
-						left: tilePosition.left,
-						top: tilePosition.top,
+						left: ghostPos.left,
+						top: ghostPos.top,
 						pointerEvents: "auto",
 						zIndex: 1,
 						backgroundColor: "red",
+						transform: `rotate(${rotation}deg)`,
 					}}
 				>
 					<BaseTile
@@ -143,7 +206,6 @@ function App() {
 						right={dragged.right}
 						style={{
 							pointerEvents: "none",
-							transform: `rotate(${rotation}deg)`,
 						}}
 					/>
 				</div>

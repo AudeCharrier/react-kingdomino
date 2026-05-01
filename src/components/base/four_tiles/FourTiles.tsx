@@ -26,23 +26,18 @@ interface TileProps {
 	style?: React.CSSProperties;
 }
 
-interface NextTilesProps {
+interface FourTilesProps {
 	tiles: TileProps[];
+	draggable: boolean;
+	onMouseDown?: (e: React.MouseEvent, tile: TileProps) => void;
 }
 
 function FourTiles({
 	tiles,
 	draggable,
-}: NextTilesProps & { draggable: boolean }) {
-	const { dragged, setDragged, setTilePosition } = useDrag();
-
-	function PlayerMoveTile(e: React.MouseEvent, tile: TileProps) {
-		const positionX = e.clientX;
-		const positionY = e.clientY;
-		setDragged(tile);
-		setTilePosition({ left: positionX, top: positionY });
-		return;
-	}
+	onMouseDown = () => {},
+}: FourTilesProps) {
+	const { dragged } = useDrag();
 
 	return (
 		<div className="four-tiles-container">
@@ -50,12 +45,7 @@ function FourTiles({
 				<div
 					key={tile.id}
 					onMouseDown={
-						draggable
-							? (e) => {
-									if (e.button !== 0) return;
-									PlayerMoveTile(e, tile);
-								}
-							: undefined
+						draggable && onMouseDown ? (e) => onMouseDown(e, tile) : undefined
 					}
 					style={{ visibility: dragged?.id === tile.id ? "hidden" : "visible" }}
 				>
