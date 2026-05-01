@@ -1,84 +1,117 @@
-const array = [
-	{ id: 1 },
-	{ id: 2, landscape: "prairie", crowns: 0 },
-	{ id: 3, landscape: "forest", crowns: 1 },
-	{ id: 4, landscape: "forest", crowns: 0 },
-	{ id: 5, landscape: "desert", crowns: 0 },
-	{ id: 6 },
-	{ id: 7, landscape: "desert", crowns: 0 },
-	{ id: 8, landscape: "desert", crowns: 0 },
-	{ id: 9, landscape: "lake", crowns: 0 },
-	{ id: 10, landscape: "lake", crowns: 1 },
-	{ id: 11, landscape: "forest", crowns: 0 },
-	{ id: 12, landscape: "forest", crowns: 0 },
-	{ id: 13, landscape: "lake", crowns: 1 },
-	{ id: 14, landscape: "forest", crowns: 1 },
-	{ id: 15, landscape: "forest", crowns: 1 },
-	{ id: 16, landscape: "forest", crowns: 1 },
-	{ id: 17, landscape: "forest", crowns: 0 },
-	{ id: 18, landscape: "forest", crowns: 0 },
-	{ id: 19, landscape: "lake", crowns: 0 },
-	{ id: 20, landscape: "lake", crowns: 1 },
-	{ id: 21, landscape: "forest", crowns: 0 },
-	{ id: 22, landscape: "forest", crowns: 1 },
-	{ id: 23, landscape: "forest", crowns: 0 },
-	{ id: 24, landscape: "forest", crowns: 0 },
-	{ id: 25 },
-	{ id: 26, landscape: "lake", crowns: 0 },
-	{ id: 27, landscape: "cave", crowns: 2 },
-	{ id: 28, landscape: "lake", crowns: 0 },
-	{ id: 29, landscape: "desert", crowns: 0 },
-	{ id: 30, landscape: "desert", crowns: 0 },
-	{ id: 31, landscape: "prairie", crowns: 1 },
-	{ id: 32, landscape: "prairie", crowns: 0 },
-	{ id: 33, landscape: "marais", crowns: 2 },
-	{ id: 34, landscape: "marais", crowns: 0 },
-	{ id: 35, landscape: "lake", crowns: 0 },
-	{ id: 36, landscape: "desert", crowns: 0 },
-	{ id: 37, landscape: "desert", crowns: 0 },
-	{ id: 38, landscape: "desert", crowns: 0 },
-	{ id: 39, landscape: "prairie", crowns: 0 },
-	{ id: 40, landscape: "prairie", crowns: 0 },
-	{ id: 41, landscape: "prairie", crowns: 2 },
-	{ id: 42, landscape: "lake", crowns: 0 },
-	{ id: 43, landscape: "cave", crowns: 1 },
-	{ id: 44, landscape: "cave", crowns: 2 },
-	{ id: 45, landscape: "desert", crowns: 0 },
-	{ id: 46, landscape: "desert", crowns: 1 },
-	{ id: 47, landscape: "prairie", crowns: 0 },
-	{ id: 48, landscape: "prairie", crowns: 2 },
-	{ id: 49, landscape: "desert", crowns: 0 },
+const tiles = [
+	{ cellId: 1 },
+	{
+		cellId: 2,
+		tileId: 49, //CHANGER LA CLE DANS LES AUTRES TYPAGES !!!!!
+		imgSrcRecto: "blabla",
+		left: {
+			landscape: "prairie",
+			flames: 0,
+		},
+	},
+	{ cellId: 3, landscape: "forest", flames: 1 },
+	{ cellId: 4, landscape: "forest", flames: 0 },
+	{ cellId: 5, landscape: "desert", flames: 0 },
+	{ cellId: 6 },
+	{ cellId: 7, landscape: "desert", flames: 0 },
+	{ cellId: 8, landscape: "desert", flames: 0 },
+	{ cellId: 9, landscape: "lake", flames: 0 },
+	{ cellId: 10, landscape: "lake", flames: 1 },
+	{ cellId: 11, landscape: "forest", flames: 0 },
+	{ cellId: 12, landscape: "forest", flames: 0 },
+	{ cellId: 13, landscape: "lake", flames: 1 },
+	{ cellId: 14, landscape: "forest", flames: 1 },
+	{ cellId: 15, landscape: "forest", flames: 1 },
+	{ cellId: 16, landscape: "forest", flames: 1 },
+	{ cellId: 17, landscape: "forest", flames: 0 },
+	{ cellId: 18, landscape: "forest", flames: 0 },
+	{ cellId: 19, landscape: "lake", flames: 0 },
+	{ cellId: 20, landscape: "lake", flames: 1 },
+	{ cellId: 21, landscape: "forest", flames: 0 },
+	{ cellId: 22, landscape: "forest", flames: 1 },
+	{ cellId: 23, landscape: "forest", flames: 0 },
+	{ cellId: 24, landscape: "forest", flames: 0 },
+	{ cellId: 25 },
+	{ cellId: 26, landscape: "lake", flames: 0 },
+	{ cellId: 27, landscape: "cave", flames: 2 },
+	{ cellId: 28, landscape: "lake", flames: 0 },
+	{ cellId: 29, landscape: "desert", flames: 0 },
+	{ cellId: 30, landscape: "desert", flames: 0 },
+	{ cellId: 31, landscape: "prairie", flames: 1 },
+	{ cellId: 32, landscape: "prairie", flames: 0 },
+	{ cellId: 33, landscape: "marais", flames: 2 },
+	{ cellId: 34, landscape: "marais", flames: 0 },
+	{ cellId: 35, landscape: "lake", flames: 0 },
+	{ cellId: 36, landscape: "desert", flames: 0 },
+	{ cellId: 37, landscape: "desert", flames: 0 },
+	{ cellId: 38, landscape: "desert", flames: 0 },
+	{ cellId: 39, landscape: "prairie", flames: 0 },
+	{ cellId: 40, landscape: "prairie", flames: 0 },
+	{ cellId: 41, landscape: "prairie", flames: 2 },
+	{ cellId: 42, landscape: "lake", flames: 0 },
+	{ cellId: 43, landscape: "cave", flames: 1 },
+	{ cellId: 44, landscape: "cave", flames: 2 },
+	{ cellId: 45, landscape: "desert", flames: 0 },
+	{ cellId: 46, landscape: "desert", flames: 1 },
+	{ cellId: 47, landscape: "prairie", flames: 0 },
+	{ cellId: 48, landscape: "prairie", flames: 2 },
+	{ cellId: 49, landscape: "desert", flames: 0 },
 ];
 
-// gérer si pas de lanscape car pas de tuile/ tuile du centre :
+export interface AlgoTileProps {
+	cellId: number;
+	id?: number; //y'aura des cases vides
+	imgSrcRecto?: string; //y'aura des cases vides   //inutile, ne pas passer la props ?
+
+	left?: {
+		landscape: string;
+		flames: number;
+		volcanoFire?: number;
+		resource?: string;
+	};
+	right?: {
+		landscape: string;
+		flames: number;
+		volcanoFire?: number;
+		resource?: string;
+	};
+}
+//ou passer tileprops en Partial<TileProps> (met un ? à chaque props)
+
+// gérer si pas de landscape car pas de tuile/ tuile du centre :
 // le === gère déjà le cas undefined donc undefined === "forest" retourne false sans planter
 
-function separateLandscapes(array) {
-	const forest = array.filter((cell) => cell.landscape === "forest");
+function separateLandscapes(tiles: AlgoTileProps[]) {
+	const forest = tiles.filter(
+		(cell) =>
+			cell.left?.landscape === "forest" || cell.right?.landscape === "forest",
+	);
 	return forest;
 }
 
-const forest = separateLandscapes(array);
+const forest = separateLandscapes(tiles);
 console.log(forest);
 
 const potentialZones = [[forest[0]]];
 
-function isAdjacent(forest) {
+function isAdjacent(forest: AlgoTileProps[]) {
 	for (let i = 1; i < forest.length; i++) {
-		const potentialAdjIds = [
-			forest[i].id - 1,
-			forest[i].id + 1,
-			forest[i].id - 7,
-			forest[i].id + 7,
-		];
+		const potentialAdjIds = forest[i].cellId
+			? [
+					forest[i].cellId - 1,
+					forest[i].cellId + 1,
+					forest[i].cellId - 7,
+					forest[i].cellId + 7,
+				]
+			: [];
 		let matched = false;
-		let indexesJ = [];
+		const indexesJ = [];
 		for (let j = 0; j < potentialZones.length; j++) {
 			const pot = potentialZones[j].some((cell) => {
-				if (!potentialAdjIds.includes(cell.id)) return false;
-				// Vérifier le wrap-around
-				if (cell.id % 7 === 0 && forest[i].id % 7 === 1) return false;
-				if (forest[i].id % 7 === 0 && cell.id % 7 === 1) return false;
+				if (!potentialAdjIds.includes(cell.cellId)) return false;
+				// Vérifier le wrap-around (id7 en bout de ligne et 8 au début de la suivante)
+				if (cell.cellId % 7 === 0 && forest[i].cellId % 7 === 1) return false;
+				if (forest[i].cellId % 7 === 0 && cell.cellId % 7 === 1) return false;
 				return true;
 			});
 
@@ -88,7 +121,7 @@ function isAdjacent(forest) {
 			}
 		}
 
-		let oneZone = [];
+		let oneZone: AlgoTileProps[] = [];
 		if (!matched) {
 			potentialZones.push([forest[i]]);
 		} else if (indexesJ.length === 1) {
@@ -107,13 +140,19 @@ function isAdjacent(forest) {
 }
 console.log(isAdjacent(forest));
 
-function landscapeScore(potentialZones) {
+function landscapeScore(potentialZones: AlgoTileProps[][]) {
 	const zonesInfos = potentialZones.map((zone) => ({
-		landscape: zone[0].landscape, // même paysage pour toute la zone
+		landscape: zone[0].left?.landscape || zone[0].right?.landscape, // même paysage pour toute la zone
 		length: zone.length,
-		sumCrowns: zone.reduce((sum, cell) => sum + cell.crowns, 0), // total couronnes
+		sumFlames: zone.reduce(
+			(sum, cell) => sum + (cell.left?.flames ?? cell.right?.flames ?? 0),
+			0,
+		), // total flammes
+		//(sum + cell.left?.flames) || (sum + cell.right?.flames)
+		// si left.flames = 0, c'est falsy → il prend right inutilement !
+		// ?? = nullish coalescing : prend la valeur suivante seulement si undefined/null)
 	}));
-	const zonesScores = zonesInfos.map((zone) => zone.length * zone.sumCrowns); // score par zone
+	const zonesScores = zonesInfos.map((zone) => zone.length * zone.sumFlames); // score par zone
 	console.log(zonesScores);
 	const totalLandscapeScore = zonesScores.reduce((sum, cell) => sum + cell, 0); // score total
 	return totalLandscapeScore;
