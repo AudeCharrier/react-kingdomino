@@ -1,21 +1,18 @@
-import { useState, useEffect } from "react";
+import { useState, useRef } from "react";
 import RandomButton from "./components/base/random_button/RandomButton";
-import baseTilesArray from "./data/baseTiles.js"; //future api
+import baseTilesArray from "./data/baseTiles.js";
 import { useDrag } from "./contexts/DragContext";
 import PlayGrid from "./components/base/play_grid/PlayGrid.js";
 import FourTiles from "./components/base/four_tiles/FourTiles";
 import MoveButton from "./components/base/move_button/MoveButton.js";
 import type { CSSProperties } from "react";
 import BaseTile from "./components/base/base_tiles/BaseTile";
-/*faire un import types */
-
 import "./App.css";
 
 interface TileProps {
-	id?: number; //pas olbigé d'exister dans l'objet de ce type, ou pas obligé d'être passé en prop
+	id?: number;
 	imgSrcRecto: string;
 	imgSrcVerso?: string;
-
 	left: {
 		landscape: string;
 		flames: number;
@@ -32,137 +29,198 @@ interface TileProps {
 	};
 	style?: CSSProperties;
 }
+
 const minId = baseTilesArray[0].id;
 const maxId = baseTilesArray[baseTilesArray.length - 1].id;
-
 const allIds: number[] = [];
 for (let i = minId; i <= maxId; i++) {
 	allIds.push(i);
 }
+
 function App() {
 	const [rotation, setRotation] = useState<number>(0);
-	const rotate = () => setRotation((r) => r + 90);
-
 	const { dragged, setDragged, tilePosition, setTilePosition } = useDrag();
 	const [usedIds, setUsedIds] = useState<number[]>([]);
 	const [availableIds, setAvailableIds] = useState<number[]>(allIds);
-	const [nextTiles, setNextTiles] = useState<TileProps[]>([]); ///   attention contient des base tiles
+	const [nextTiles, setNextTiles] = useState<TileProps[]>([]);
 	const [currentTiles, setCurrentTiles] = useState<TileProps[]>([]);
-
 	const [snappedCell, setSnappedCell] = useState<{
 		left: number;
 		top: number;
-		cellIdLeft: string | null;
-		cellIdRight: string | null;
+		cellLeft: string | null;
+		cellRight: string | null;
 	} | null>(null);
+
+	// État pour stocker les tuiles posées sur la grille
+	const [gridContent, setGridContent] = useState<Record<string, any>>({});
+
+	const rotationRef = useRef(0);
+	const offsetRef = useRef({ x: 0, y: 0 });
+
+	const rotate = () => {
+		setRotation((r) => {
+			const newR = (r + 90) % 360;
+			rotationRef.current = newR;
+			return newR;
+		});
+	};
 
 	function randomId(available: number[]) {
 		const remaining = [...available];
 		const randomIdsArray: number[] = [];
-
 		for (let i = 0; i < 4; i++) {
-			const randomIndex = Math.floor(Math.random() * remaining.length); //prend entre 0 et length (48)
+			const randomIndex = Math.floor(Math.random() * remaining.length);
 			randomIdsArray[i] = remaining[randomIndex];
 			remaining.splice(randomIndex, 1);
-			//je dois actualiser le tableau des id availabel pour la prochaine boucle (mais le state est pas encore à jour)
 		}
-		console.log("ids tirés :", randomIdsArray);
 		return randomIdsArray;
 	}
 
-	//la fonction appelée à l'event gère les states à la fin
 	function DrawFourTiles(available: number[]) {
 		const randomIdsArray = randomId(available);
-
-		//tri des id par ordre croissant
 		const randomIdsSorted = randomIdsArray.sort((a, b) => a - b);
-
-		//récupérer les 4 tiles dont l'id correspond
-		const nextTiles = baseTilesArray.filter((tile) =>
+		const next = baseTilesArray.filter((tile) =>
 			randomIdsSorted.includes(tile.id),
 		);
-
-		//mettre a jour les states used pour exclure les id des prochains tirages
-		//en passant par une valeur intermédiaire, parce que les state se mettreont à jour APRES le render
 		const newUsedIds = [...usedIds, ...randomIdsSorted];
 		setUsedIds(newUsedIds);
 		const newAvailableIds = allIds.filter((id) => !newUsedIds.includes(id));
 		setAvailableIds(newAvailableIds);
-		setNextTiles(nextTiles);
-
-		return nextTiles;
+		setNextTiles(next as unknown as TileProps[]);
+		return next;
 	}
 
 	function MoveButtonTiles() {
-		const newCurrent = nextTiles;
-		setCurrentTiles(newCurrent);
-		const newNext: TileProps[] = [];
-		setNextTiles(newNext);
-		return;
+		setCurrentTiles(nextTiles);
+		setNextTiles([]);
 	}
 
 	function handleMouseDown(e: React.MouseEvent, tile: TileProps) {
 		if (e.button !== 0) return;
-		e.preventDefault(); // désactiver le réflexe du navigateur qui va capter et interférer
+		e.preventDefault();
 
-		//centrer le curseur sur la tuile
 		const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
+
+		offsetRef.current = {
+			x: e.clientX - rect.left,
+			y: e.clientY - rect.top,
+		};
+
 		setDragged(tile);
 		setTilePosition({
-			left: e.clientX - rect.width / 2,
-			top: e.clientY - rect.height / 2,
+			left: rect.left,
+			top: rect.top,
 		});
 
 		const onMove = (ev: MouseEvent) => {
-			//garder le curseur centré au déplacement
-			setTilePosition({
-				left: ev.clientX - rect.width / 2,
-				top: ev.clientY - rect.height / 2,
-			});
+			const currentLeft = ev.clientX - offsetRef.current.x;
+			const currentTop = ev.clientY - offsetRef.current.y;
 
-			//on détecte la rotation pour savoir si ce sera g/d ou h/b sur la grid
-			const isVertical = rotation % 180 !== 0;
+			setTilePosition({ left: currentLeft, top: currentTop });
 
-			//éléments les plus proches
-			const elLeft = !isVertical
-				? document.elementFromPoint(ev.clientX - 37.5, ev.clientY) //horiz g
-				: document.elementFromPoint(ev.clientX, ev.clientY - 37.5); //vert g
-			const elRight = !isVertical
-				? document.elementFromPoint(ev.clientX + 37.5, ev.clientY) //horiz d
-				: document.elementFromPoint(ev.clientX, ev.clientY + 37.5); //vert d
+			const cellUnder = document
+				.elementFromPoint(ev.clientX, ev.clientY)
+				?.closest(".cell-play-grid");
 
-			//voir la diff avec au dessus ?!
-			const cellLeft = elLeft?.closest(".cell-play-grid");
-			const cellRight = elRight?.closest(".cell-play-grid");
+			if (cellUnder) {
+				const id = Number(cellUnder.getAttribute("data-cell-id"));
+				const rectCell = cellUnder.getBoundingClientRect();
+				const r = rotationRef.current % 360;
+				const isVertical = r === 90 || r === 270;
 
-			//on a trouvé les deux cellules
-			if (cellLeft && cellRight) {
-				const rectLeft = cellLeft.getBoundingClientRect(); //on prend les dimensions/positions d'une cellule
-				setSnappedCell({
-					left: rectLeft.left, //le ghost va prendre cette position
-					top: rectLeft.top,
-					cellIdLeft: cellLeft.getAttribute("data-cellId"), // claude a pas compris : c'est les props de la basetile qui doivent aller dans la grid
-					cellIdRight: cellRight.getAttribute("data-cellId"),
-				});
+				if (isVertical) {
+					// Snap Vertical
+					if (id <= 42) {
+						// 49 - 7
+						setSnappedCell({
+							left: rectCell.left,
+							top: rectCell.top,
+							cellLeft: String(id),
+							cellRight: String(id + 7),
+						});
+					}
+				} else {
+					// Snap Horizontal
+					if (id % 7 !== 0) {
+						setSnappedCell({
+							left: rectCell.left,
+							top: rectCell.top,
+							cellLeft: String(id),
+							cellRight: String(id + 1),
+						});
+					}
+				}
 			} else {
 				setSnappedCell(null);
 			}
 		};
-		/* 		const onMove = (ev: MouseEvent) => {
-			setTilePosition({ left: ev.clientX, top: ev.clientY });
-		}; */
-
 		const onUp = () => {
+			// 1. On capture la rotation ACTUELLE avant tout reset
+			const finalRotation = rotationRef.current % 360;
+
+			setSnappedCell((currentSnap) => {
+				if (
+					currentSnap &&
+					currentSnap.cellLeft &&
+					currentSnap.cellRight &&
+					tile
+				) {
+					const { cellLeft, cellRight } = currentSnap;
+
+					let data1: TileProps["left"];
+					let data2: TileProps["right"];
+
+					if (finalRotation === 0 || finalRotation === 90) {
+						data1 = tile.left;
+						data2 = tile.right;
+					} else {
+						data1 = tile.right;
+						data2 = tile.left;
+					}
+
+					setGridContent((prev) => ({
+						...prev,
+						[cellLeft]: {
+							...data1,
+							imgSrc: tile.imgSrcRecto,
+							// On utilise finalRotation pour le CSS et la logique
+							part:
+								finalRotation === 0 || finalRotation === 90
+									? "left-part"
+									: "right-part",
+							rotation: finalRotation,
+						},
+						[cellRight]: {
+							...data2,
+							imgSrc: tile.imgSrcRecto,
+							part:
+								finalRotation === 0 || finalRotation === 90
+									? "right-part"
+									: "left-part",
+							rotation: finalRotation,
+						},
+					}));
+
+					setCurrentTiles((prev) => prev.filter((t) => t.id !== tile.id));
+				}
+				return null;
+			});
+
+			// 2. Le reset ne se fait qu'APRÈS
 			setDragged(null);
 			setRotation(0);
+			rotationRef.current = 0;
 			window.removeEventListener("mousemove", onMove);
 			window.removeEventListener("mouseup", onUp);
 		};
-
 		window.addEventListener("mousemove", onMove);
 		window.addEventListener("mouseup", onUp);
 	}
-	const ghostPos = snappedCell ?? tilePosition;
+
+	const ghostPos = snappedCell
+		? { left: snappedCell.left, top: snappedCell.top }
+		: tilePosition;
+
 	return (
 		<main
 			tabIndex={0}
@@ -185,18 +243,28 @@ function App() {
 			</section>
 
 			<section className="section-play">
-				<PlayGrid />
+				<PlayGrid gridContent={gridContent} />
 			</section>
+
 			{dragged && (
 				<div
+					className="drag-container"
 					style={{
 						position: "fixed",
 						left: ghostPos.left,
 						top: ghostPos.top,
-						pointerEvents: "auto",
-						zIndex: 1,
-						backgroundColor: "red",
-						transform: `rotate(${rotation}deg)`,
+						pointerEvents: "none",
+						zIndex: 1000,
+						transformOrigin: "top left",
+						transform: `rotate(${rotation}deg) ${
+							rotation === 90
+								? "translate(0, -100%)"
+								: rotation === 180
+									? "translate(-100%, -100%)"
+									: rotation === 270
+										? "translate(-100%, 0)"
+										: "translate(0, 0)"
+						}`,
 					}}
 				>
 					<BaseTile
@@ -204,9 +272,7 @@ function App() {
 						imgSrcRecto={dragged.imgSrcRecto}
 						left={dragged.left}
 						right={dragged.right}
-						style={{
-							pointerEvents: "none",
-						}}
+						style={{ pointerEvents: "none" }}
 					/>
 				</div>
 			)}
@@ -215,7 +281,3 @@ function App() {
 }
 
 export default App;
-
-//draggable : pour activer la fonction de drag&drop seulement sur les current tiles
-//si mauvaise manip d'un joueur ?? 2*move ?..... comment annuler le dernier coup ? avec localstroage ?
-//revoir la syntaxe des set (prev => blabla) DANS TOUS LES FICHIERS
