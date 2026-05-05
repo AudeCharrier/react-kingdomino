@@ -1,4 +1,7 @@
+import { useState } from "react";
 import BaseTile from "../base_tiles/BaseTile";
+import { useDrag } from "../../../contexts/DragContext";
+import type React from "react";
 import "./FourTiles.css";
 
 interface TileProps {
@@ -20,27 +23,64 @@ interface TileProps {
 		resource?: string;
 		alt: string;
 	};
+	style?: React.CSSProperties;
 }
 
-interface NextTilesProps {
+interface FourTilesProps {
 	tiles: TileProps[];
+	draggable: boolean;
+	onMouseDown?: (e: React.MouseEvent, tile: TileProps) => void;
 }
 
-function FourTiles({ tiles }: NextTilesProps) {
+function FourTiles({
+	tiles,
+	draggable,
+	onMouseDown = () => {},
+}: FourTilesProps) {
+	const { dragged } = useDrag();
+
 	return (
 		<div className="four-tiles-container">
 			{tiles.map((tile) => (
-				<BaseTile
+				<div
 					key={tile.id}
-					id={tile.id}
-					imgSrcRecto={tile.imgSrcRecto}
-					imgSrcVerso={tile.imgSrcVerso}
-					left={tile.left}
-					right={tile.right}
-				/>
+					onMouseDown={
+						draggable && onMouseDown ? (e) => onMouseDown(e, tile) : undefined
+					}
+					style={{ visibility: dragged?.id === tile.id ? "hidden" : "visible" }}
+				>
+					<BaseTile
+						id={tile.id}
+						imgSrcRecto={tile.imgSrcRecto}
+						left={tile.left}
+						right={tile.right}
+					/>
+				</div>
 			))}
 		</div>
 	);
 }
 
 export default FourTiles;
+
+//onmousedown
+//récup en event la position du pointeur
+//actualiser position de départ tuile
+//créer un ghost
+//hidden l'original
+
+//on mouse move
+//recup infos pointeur
+//le passer en state au ghost
+
+/*sur app
+onmousemove : 
+récup e -> settileposition avec e
+
+//oncontextmenu = clic droit
+//on vérifie si c draggable (current tile) et si c'est la tuile qui a été dragged (donc sélectionnée)
+
+onmouseup : setdragged(false)   mais et l'original alors ??*/
+
+//if (e.button !== 0) return; : mousedown se déclenche au clic gauche et droit
+//button gauche = 0
