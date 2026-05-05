@@ -8,6 +8,7 @@ import MoveButton from "./components/base/move_button/MoveButton.js";
 import type { CSSProperties } from "react";
 import BaseTile from "./components/base/base_tiles/BaseTile";
 import "./App.css";
+import { calculateScore } from "./utils/algoScoring";
 
 interface TileProps {
 	id?: number;
@@ -50,10 +51,6 @@ function App() {
 		cellLeft: string | null;
 		cellRight: string | null;
 	} | null>(null);
-
-	// État pour stocker les tuiles posées sur la grille
-	const [gridContent, setGridContent] = useState<Record<string, any>>({});
-
 	const rotationRef = useRef(0);
 	const offsetRef = useRef({ x: 0, y: 0 });
 
@@ -64,6 +61,9 @@ function App() {
 			return newR;
 		});
 	};
+	// État pour stocker les tuiles posées sur la grille
+	const [gridContent, setGridContent] = useState<Record<string, any>>({});
+	const [score, setScore] = useState<ScoreResult | null>(null);
 
 	function randomId(available: number[]) {
 		const remaining = [...available];
@@ -182,6 +182,7 @@ function App() {
 						...prev,
 						[cellLeft]: {
 							...data1,
+							cellId: Number(cellLeft),
 							imgSrc: tile.imgSrcRecto,
 							// On utilise finalRotation pour le CSS et la logique
 							part:
@@ -192,6 +193,7 @@ function App() {
 						},
 						[cellRight]: {
 							...data2,
+							cellId: Number(cellRight),
 							imgSrc: tile.imgSrcRecto,
 							part:
 								finalRotation === 0 || finalRotation === 90
@@ -276,6 +278,25 @@ function App() {
 					/>
 				</div>
 			)}
+			<section className="section-score">
+				<button
+					type="button"
+					onClick={() => setScore(calculateScore(gridContent))}
+				>
+					Calculer le score
+				</button>
+
+				{score && (
+					<>
+						{score.details.map((scodetail) => (
+							<p key={scodetail.landscape}>
+								{scodetail.landscape} : {scodetail.score}
+							</p>
+						))}
+						<p>Total : {score.total}</p>
+					</>
+				)}
+			</section>
 		</main>
 	);
 }
