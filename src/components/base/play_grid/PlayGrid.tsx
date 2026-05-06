@@ -1,11 +1,12 @@
 import "./PlayGrid.css";
 
 //on évite le re-render de ça :
-const array: number[] = [];
+const arrayCellId: number[] = [];
 for (let i = 1; i < 50; i++) {
-	array[i] = i;
+	arrayCellId[i] = i;
 }
 interface CellData {
+	cellId: number;
 	landscape: string;
 	flames: number;
 	volcanoFire?: number;
@@ -23,21 +24,21 @@ interface PlayGridProps {
 function PlayGrid({ gridContent }: PlayGridProps) {
 	return (
 		<div className="play-grid">
-			{array.map((cellId) => {
-				const data = gridContent[cellId];
+			{arrayCellId.map((cellId) => {
+				const infoTile = gridContent[cellId];
 
 				return (
 					<div key={cellId} className="cell-play-grid" data-cell-id={cellId}>
-						{data ? (
+						{infoTile ? (
 							<div
 								className="img-container-single"
-								style={{ transform: `rotate(${data.rotation}deg)` }}
+								style={{ transform: `rotate(${infoTile.rotation}deg)` }}
 							>
 								<div
-									className={`placed-img-bg ${data.part === "left-part" ? "left-part" : "right-part"}`}
-									style={{ backgroundImage: `url(${data.imgSrc})` }}
-									data-landscape={data.landscape}
-									data-flames={data.flames}
+									className={`placed-img-bg ${infoTile.part === "left-part" ? "left-part" : "right-part"}`}
+									style={{ backgroundImage: `url(${infoTile.imgSrc})` }}
+									data-landscape={infoTile.landscape}
+									data-flames={infoTile.flames}
 								></div>
 							</div>
 						) : (
