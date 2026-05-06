@@ -11,7 +11,6 @@ export interface TileData {
 export interface TileProps {
 	id?: number;
 	imgSrcRecto: string;
-	imgSrcVerso?: string;
 	left: TileData;
 	right: TileData;
 	style?: CSSProperties;
