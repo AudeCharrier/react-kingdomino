@@ -1,30 +1,8 @@
-import { useState } from "react";
 import BaseTile from "../base_tiles/BaseTile";
-import { useDrag } from "../../../contexts/DragContext";
 import type React from "react";
+import type { TileProps } from "../../../types/game.types";
+import { useDrag } from "../../../contexts/DragContext";
 import "./FourTiles.css";
-
-interface TileProps {
-	id?: number; //pas olbigé d'exister dans l'objet de ce type, ou pas obligé d'être passé en prop
-	imgSrcRecto: string;
-	imgSrcVerso?: string;
-
-	left: {
-		landscape: string;
-		flames: number;
-		volcanoFire?: number;
-		resource?: string;
-		alt: string;
-	};
-	right: {
-		landscape: string;
-		flames: number;
-		volcanoFire?: number;
-		resource?: string;
-		alt: string;
-	};
-	style?: React.CSSProperties;
-}
 
 interface FourTilesProps {
 	tiles: TileProps[];

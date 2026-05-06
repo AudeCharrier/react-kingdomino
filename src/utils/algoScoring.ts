@@ -1,4 +1,6 @@
-export interface AlgoTileProps {
+import type { ScoreDetails, ScoreResult } from "../types/game.types";
+
+interface AlgoTileProps {
 	cellId: number;
 	landscape?: string;
 	flames?: number;
@@ -16,16 +18,6 @@ interface CellData {
 	imgSrc: string;
 	part: "left-part" | "right-part";
 	rotation: number;
-}
-
-export interface ScoreDetails {
-	landscape: string;
-	score: number;
-}
-
-export interface ScoreResult {
-	details: ScoreDetails[];
-	total: number;
 }
 
 const landscapes = ["dert", "meadow", "jungle", "lake", "rocky"];
