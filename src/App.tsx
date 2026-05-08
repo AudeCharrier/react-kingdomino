@@ -1,56 +1,40 @@
-import { useState, useRef } from "react";
-import RandomButton from "./components/base/random_button/RandomButton";
-import baseTilesArray from "./data/baseTiles.js";
+import { useRef, useState } from "react";
+import { calculateScore } from "./utils/algoScoring";
 import { useDrag } from "./contexts/DragContext";
-import PlayGrid from "./components/base/play_grid/PlayGrid.js";
+import BaseTile from "./components/base/base_tiles/BaseTile";
 import FourTiles from "./components/base/four_tiles/FourTiles";
 import MoveButton from "./components/base/move_button/MoveButton.js";
-import type { CSSProperties } from "react";
-import BaseTile from "./components/base/base_tiles/BaseTile";
+import PlayGrid from "./components/base/play_grid/PlayGrid.js";
+import RandomButton from "./components/base/random_button/RandomButton";
+
+import type { TileProps, ScoreResult } from "./types/game.types";
 import "./App.css";
-import { calculateScore } from "./utils/algoScoring";
 
-interface TileProps {
-	id?: number;
-	imgSrcRecto: string;
-	imgSrcVerso?: string;
-	left: {
-		landscape: string;
-		flames: number;
-		volcanoFire?: number;
-		resource?: string;
-		alt: string;
-	};
-	right: {
-		landscape: string;
-		flames: number;
-		volcanoFire?: number;
-		resource?: string;
-		alt: string;
-	};
-	style?: CSSProperties;
-}
-
-const minId = baseTilesArray[0].id;
-const maxId = baseTilesArray[baseTilesArray.length - 1].id;
-const allIds: number[] = [];
-for (let i = minId; i <= maxId; i++) {
-	allIds.push(i);
-}
+import { useTileManager } from "./hooks/useTileManager";
 
 function App() {
-	const [rotation, setRotation] = useState<number>(0);
+	const {
+		availableIds,
+		nextTiles,
+		currentTiles,
+		setCurrentTiles,
+		DrawFourTiles,
+		MoveButtonTiles,
+	} = useTileManager();
+
 	const { dragged, setDragged, tilePosition, setTilePosition } = useDrag();
-	const [usedIds, setUsedIds] = useState<number[]>([]);
-	const [availableIds, setAvailableIds] = useState<number[]>(allIds);
-	const [nextTiles, setNextTiles] = useState<TileProps[]>([]);
-	const [currentTiles, setCurrentTiles] = useState<TileProps[]>([]);
+	const [rotation, setRotation] = useState<number>(0);
 	const [snappedCell, setSnappedCell] = useState<{
 		left: number;
 		top: number;
 		cellLeft: string | null;
 		cellRight: string | null;
 	} | null>(null);
+
+	// État pour stocker les tuiles posées sur la grille
+	const [gridContent, setGridContent] = useState<Record<string, any>>({});
+	const [score, setScore] = useState<ScoreResult | null>(null);
+
 	const rotationRef = useRef(0);
 	const offsetRef = useRef({ x: 0, y: 0 });
 
@@ -61,39 +45,6 @@ function App() {
 			return newR;
 		});
 	};
-	// État pour stocker les tuiles posées sur la grille
-	const [gridContent, setGridContent] = useState<Record<string, any>>({});
-	const [score, setScore] = useState<ScoreResult | null>(null);
-
-	function randomId(available: number[]) {
-		const remaining = [...available];
-		const randomIdsArray: number[] = [];
-		for (let i = 0; i < 4; i++) {
-			const randomIndex = Math.floor(Math.random() * remaining.length);
-			randomIdsArray[i] = remaining[randomIndex];
-			remaining.splice(randomIndex, 1);
-		}
-		return randomIdsArray;
-	}
-
-	function DrawFourTiles(available: number[]) {
-		const randomIdsArray = randomId(available);
-		const randomIdsSorted = randomIdsArray.sort((a, b) => a - b);
-		const next = baseTilesArray.filter((tile) =>
-			randomIdsSorted.includes(tile.id),
-		);
-		const newUsedIds = [...usedIds, ...randomIdsSorted];
-		setUsedIds(newUsedIds);
-		const newAvailableIds = allIds.filter((id) => !newUsedIds.includes(id));
-		setAvailableIds(newAvailableIds);
-		setNextTiles(next as unknown as TileProps[]);
-		return next;
-	}
-
-	function MoveButtonTiles() {
-		setCurrentTiles(nextTiles);
-		setNextTiles([]);
-	}
 
 	function handleMouseDown(e: React.MouseEvent, tile: TileProps) {
 		if (e.button !== 0) return;
