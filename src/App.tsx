@@ -6,7 +6,7 @@ import FourTiles from "./components/base/four_tiles/FourTiles";
 import MoveButton from "./components/base/move_button/MoveButton.js";
 import PlayGrid from "./components/base/play_grid/PlayGrid.js";
 import RandomButton from "./components/base/random_button/RandomButton";
-
+import PlayerHelper from "./components/common/player_helper/PlayerHelper.js";
 import type { TileProps, ScoreResult } from "./types/game.types";
 import "./App.css";
 
@@ -176,6 +176,7 @@ function App() {
 
 	return (
 		<main
+			className="app-container"
 			tabIndex={0}
 			onKeyDown={(e) => {
 				if (e.key === "r" && dragged) rotate();
@@ -184,25 +185,29 @@ function App() {
 			<header className="kingdo-header">
 				<h1>Kingdomino Origins</h1>
 			</header>
-			<section className="draw-tiles">
-				<div className="four-tiles">
-					<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
-					<FourTiles tiles={nextTiles} draggable={false} />
-				</div>
-				<div className="four-tiles">
-					<MoveButton onMove={() => MoveButtonTiles()} />
-					<FourTiles
-						tiles={currentTiles}
-						draggable={true}
-						onMouseDown={handleMouseDown}
-					/>
-				</div>
-			</section>
+			<div className="game-layout">
+				<section className="draw-tiles">
+					<div className="four-tiles">
+						<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
+						<FourTiles tiles={nextTiles} draggable={false} />
+					</div>
+					<div className="four-tiles">
+						<MoveButton onMove={() => MoveButtonTiles()} />
+						<FourTiles
+							tiles={currentTiles}
+							draggable={true}
+							onMouseDown={handleMouseDown}
+						/>
+					</div>
+				</section>
 
-			<section className="section-play">
-				<PlayGrid gridContent={gridContent} />
-			</section>
-
+				<section className="section-play">
+					<PlayGrid gridContent={gridContent} />
+				</section>
+				<aside className="playerhelper-container">
+					<PlayerHelper />
+				</aside>
+			</div>
 			{dragged && (
 				<div
 					className="drag-container"

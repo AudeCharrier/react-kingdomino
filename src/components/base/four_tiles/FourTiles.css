@@ -3,6 +3,6 @@
 	flex-direction: column;
 	justify-content: center;
 	align-items: flex-start;
-	gap: 10px;
-	width: 150px; /*=width base tile*/
+	gap: var(--tile-gap);
+	width: var(--tile-width);
 }

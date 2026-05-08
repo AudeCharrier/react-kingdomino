@@ -1,0 +1,36 @@
+.playerhelper-compo {
+	display: flex;
+	flex-direction: column;
+	justify-content: flex-start;
+	align-items: flex-start;
+	gap: 2rem;
+	padding: 1rem 2rem;
+
+	.playerhelper-title {
+		font-weight: bold;
+		color: var(--text-dark);
+		text-align: center;
+		width: 100%;
+		border-bottom: 1px solid var(--border-dark);
+		padding-bottom: 0.5rem;
+	}
+	.playerhelper-list {
+		display: flex;
+		flex-direction: column;
+		justify-content: flex-start;
+		align-items: flex-start;
+		gap: 1rem;
+		list-style-position: inside;
+	}
+}
+
+/*touche R*/
+.kbd {
+	display: inline-block;
+	padding: 0.1rem 0.4rem;
+	font-family: monospace;
+	background-color: #eee;
+	border: 1px solid #b4b4b4;
+	border-radius: 3px;
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.2);
+}
