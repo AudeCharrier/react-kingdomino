@@ -9,7 +9,7 @@
 		text-align: center;
 	}
 	.video-container {
-		aspect-ratio: 16 / 9; /* Force le format vidéo pour éviter les sauts de taille */
+		aspect-ratio: 16 / 9; /*Force le format vidéo pour éviter les sauts de taille */
 		background: #000;
 		padding: 1rem;
 		margin: 1rem 0;
