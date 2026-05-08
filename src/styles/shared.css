@@ -1,0 +1,36 @@
+.overlay {
+	position: fixed;
+	inset: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	background: rgba(20, 14, 10, 0.45);
+	backdrop-filter: blur(6px);
+	z-index: 3;
+	animation: fadeIn 0.25s ease;
+}
+
+.btn-style-stone {
+	height: var(--button-height);
+	width: max-content;
+	padding: 10px 20px;
+	border: none;
+	border-radius: 6px;
+	border-bottom: 4px solid #4a4a4a;
+	background: #7d7d7d;
+	color: white;
+	font-family: "Piedra", system-ui;
+	font-size: 1rem;
+	font-weight: 200;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	cursor: pointer;
+	transition: all 0.1s;
+	&:hover {
+		filter: brightness(1.25);
+	}
+	&:active {
+		border-bottom: 0px;
+		transform: translateY(4px);
+	}
+}

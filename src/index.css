@@ -1,35 +1,31 @@
+@import "@fontsource/piedra/index.css";
 :root {
-	--text: #6b6375; /*
-	--text-h: #08060d;
-	--bg: #fff;
-	--border: #e5e4e7;
-	--code-bg: #f4f3ec;
-	--accent: #aa3bff;
-	--accent-bg: rgba(170, 59, 255, 0.1);
-	--accent-border: rgba(170, 59, 255, 0.5);
-	--social-bg: rgba(244, 243, 236, 0.5);
-	--shadow:
-		rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-	--sans: system-ui, "Segoe UI", Roboto, sans-serif;
-	--heading: system-ui, "Segoe UI", Roboto, sans-serif;
-	--mono: ui-monospace, Consolas, monospace;
-
-	font: 18px / 145% var(--sans);
-	letter-spacing: 0.18px; */
 	color-scheme: light dark;
-	color: var(--text); /*
-	background: var(--bg);
-	font-synthesis: none;
-	text-rendering: optimizeLegibility;
-	-webkit-font-smoothing: antialiased;
-	-moz-osx-font-smoothing: grayscale;
+	color: var(--text-dark);
+	font-family: "Piedra", system-ui;
+	background-image: url("src/assets/bg_kingdo_16_9_gamma2.webp");
+	background-position: center bottom;
+	background-size: cover;
+	background-repeat: no-repeat;
+	min-height: 100vh;
+	--bg-panel: #d8c19f;
+	--bg-panel-light: #ead9bd;
+	--border-dark: #8b6543;
+	--text-dark: #3d2d21;
 
-	@media (max-width: 1024px) {
-		font-size: 16px;
-	} */
+	--tile-width: 150px;
+	--tile-height: 75px;
+	--tile-gap: 1rem;
+	--tile-padding: 1.6rem;
+	--button-height: 3rem;
+	/* On calcule la place nécessaire pour 4 tuiles + les espaces entre elles */
+	--panel-min-height: calc(
+		(var(--tile-height) * 4) +
+		(var(--tile-gap) * 4) +
+		(var(--tile-padding) * 2) +
+		(var(--button-height))
+	);
 }
-
 * {
 	margin: 0;
 	padding: 0;

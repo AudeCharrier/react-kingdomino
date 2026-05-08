@@ -9,8 +9,10 @@ import RandomButton from "./components/base/random_button/RandomButton";
 import PlayerHelper from "./components/common/player_helper/PlayerHelper.js";
 import type { TileProps, ScoreResult } from "./types/game.types";
 import "./App.css";
+import "./styles/shared.css";
 
 import { useTileManager } from "./hooks/useTileManager";
+import StartOverlay from "./components/common/start_overlay/StartOverlay";
 
 const landscapeLabels = {
 	jungle: "Jungle",
@@ -20,6 +22,14 @@ const landscapeLabels = {
 	desert: "Désert",
 };
 function App() {
+	// start overlay tuto
+	const [showOverlay, setShowOverlay] = useState(true);
+
+	const handleCloseOverlay = () => {
+		setShowOverlay(false);
+	};
+
+	//données et effets de jeu : id des tuiles, tuile dragged, effet snap
 	const {
 		availableIds,
 		nextTiles,
@@ -40,8 +50,11 @@ function App() {
 
 	// État pour stocker les tuiles posées sur la grille
 	const [gridContent, setGridContent] = useState<Record<string, any>>({});
+
+	// score
 	const [score, setScore] = useState<ScoreResult | null>(null);
 
+	// pivoter une tuile
 	const rotationRef = useRef(0);
 	const offsetRef = useRef({ x: 0, y: 0 });
 
@@ -53,6 +66,7 @@ function App() {
 		});
 	};
 
+	// déplacer une tuile
 	function handleMouseDown(e: React.MouseEvent, tile: TileProps) {
 		if (e.button !== 0) return;
 		e.preventDefault();
@@ -192,7 +206,12 @@ function App() {
 			<header className="kingdo-header">
 				<h1>Kingdomino Origins</h1>
 			</header>
-			<div className="game-layout">
+			{showOverlay && <StartOverlay onStart={handleCloseOverlay} />}
+			<div
+				className={
+					showOverlay ? "game-content blur-effect" : "game-content game-layout"
+				}
+			>
 				<section className="draw-tiles">
 					<div className="four-tiles">
 						<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
@@ -220,7 +239,7 @@ function App() {
 					</button>
 					<button
 						type="button"
-						className="btn-style-stone"
+						className="btn-style-stone btn-score"
 						onClick={() => setScore(calculateScore(gridContent))}
 					>
 						Calculer le score
@@ -259,7 +278,7 @@ function App() {
 			)}
 
 			{score && (
-				<div className="endgame-overlay">
+				<div className="overlay">
 					<div className="endgame-popup">
 						<h2 className="endgame-title">Fin de partie</h2>
 						<ul className="score-list">
