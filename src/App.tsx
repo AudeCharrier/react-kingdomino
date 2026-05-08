@@ -181,18 +181,22 @@ function App() {
 				if (e.key === "r" && dragged) rotate();
 			}}
 		>
-			<header className="kingdo-header"></header>
+			<header className="kingdo-header">
+				<h1>Kingdomino Origins</h1>
+			</header>
 			<section className="draw-tiles">
-				<div className="buttons-and-meeples">
+				<div className="four-tiles">
 					<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
-					<MoveButton onMove={() => MoveButtonTiles()} />
+					<FourTiles tiles={nextTiles} draggable={false} />
 				</div>
-				<FourTiles tiles={nextTiles} draggable={false} />
-				<FourTiles
-					tiles={currentTiles}
-					draggable={true}
-					onMouseDown={handleMouseDown}
-				/>
+				<div className="four-tiles">
+					<MoveButton onMove={() => MoveButtonTiles()} />
+					<FourTiles
+						tiles={currentTiles}
+						draggable={true}
+						onMouseDown={handleMouseDown}
+					/>
+				</div>
 			</section>
 
 			<section className="section-play">

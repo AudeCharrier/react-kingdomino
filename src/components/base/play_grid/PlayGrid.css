@@ -5,30 +5,27 @@
 	border: 2px solid red;
 	width: max-content;
 	gap: 0;
-}
-
-.cell-play-grid {
-	background-color: white;
-	border: 1px solid black;
-	width: 75px;
-	height: 75px;
-	position: relative;
-	overflow: hidden;
-}
-
-/* Le conteneur qui gère la rotation */
-.img-container-single {
-	width: 100%;
-	height: 100%;
-	overflow: hidden;
-}
-
-/* L'élément qui affiche l'image en fond */
-.placed-img-bg {
-	width: 100%;
-	height: 100%;
-	background-size: 200% 100%; /* L'image fait 2 fois la largeur de la cellule */
-	background-repeat: no-repeat;
+	.cell-play-grid {
+		background-color: white;
+		border: 1px solid black;
+		width: 75px;
+		height: 75px;
+		position: relative;
+		overflow: hidden;
+		/* Le conteneur qui gère la rotation */
+		.img-container-single {
+			width: 100%;
+			height: 100%;
+			overflow: hidden;
+			/* L'élément qui affiche l'image en fond */
+			.placed-img-bg {
+				width: 100%;
+				height: 100%;
+				background-size: 200% 100%; /* L'image fait 2 fois la largeur de la cellule */
+				background-repeat: no-repeat;
+			}
+		}
+	}
 }
 
 /* Décalage pour voir la moitié gauche */

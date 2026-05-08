@@ -5,7 +5,7 @@ interface MoveButtonProps {
 function MoveButton({ onMove }: MoveButtonProps) {
 	return (
 		<button type="button" onClick={onMove}>
-			Move tiles
+			Tour actuel
 		</button>
 	);
 }

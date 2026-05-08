@@ -1,26 +1,59 @@
-.kingdo-header {
-	width: auto;
-	height: 2rem;
-}
+:root {
+	--bg-panel: #d8c19f;
+	--bg-panel-light: #ead9bd;
 
-.draw-tiles {
+	--border-dark: #8b6543;
+	--shadow: rgba(0, 0, 0, 0.28);
+
+	--text-dark: #2a2018;
+
+	--forest: #5d8c4d;
+	--water: #4fa3d9;
+	--field: #d9b33b;
+	--mountain: #8b8177;
+	--volcano: #c2573f;
+}
+main {
 	display: flex;
 	flex-direction: row;
-	justify-content: flex-start;
-	align-items: flex-start;
-	gap: 30px;
-}
-
-.buttons-and-meeples {
-	display: flex;
-	flex-direction: column;
-	justify-content: flex-start;
-	align-items: center;
-	gap: 20px;
-}
-.section-play {
-	display: flex;
-	flex-direction: column;
 	justify-content: center;
-	align-items: flex-end;
+	align-items: flex-start;
+	position: relative;
+	.kingdo-header {
+		width: 100%;
+		height: 4rem;
+		position: absolute;
+		top: 0;
+		border: 2px solid white;
+	}
+	.draw-tiles {
+		display: flex;
+		flex-direction: row;
+		justify-content: flex-start;
+		align-items: flex-start;
+		gap: 2rem;
+		width: 25vw;
+		padding-top: 6rem;
+		.four-tiles {
+			display: flex;
+			flex-direction: column;
+			justify-content: flex-start;
+			align-items: center;
+			gap: 1rem;
+		}
+	}
+	.section-play {
+		/*pas bien centrée*/
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		width: 50vw;
+		padding-top: 6rem;
+	}
+
+	.section-score {
+		width: 25vw;
+		padding-top: 6rem;
+	}
 }
