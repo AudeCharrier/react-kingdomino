@@ -1,5 +1,4 @@
 import { useEffect, useState } from "react";
-import baseTilesArray from "../data/baseTiles.js";
 import type { TileProps } from "../types/game.types";
 import { randomId } from "../utils/gameLogic";
 
@@ -40,10 +39,11 @@ export function useTileManager() {
 	function DrawFourTiles(available: number[]) {
 		const randomIdsArray = randomId(available);
 		const randomIdsSorted = randomIdsArray.sort((a, b) => a - b);
-		const next = baseTilesArray.filter((tile) =>
-			randomIdsSorted.includes(tile.id),
+		const next = baseTiles.filter((tile) =>
+			randomIdsSorted.includes(tile.id as number),
 		);
 		const newUsedIds = [...usedIds, ...randomIdsSorted];
+
 		setUsedIds(newUsedIds);
 		const allIds = baseTiles.map((t) => t.id);
 
