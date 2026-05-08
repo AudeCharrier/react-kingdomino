@@ -12,6 +12,13 @@ import "./App.css";
 
 import { useTileManager } from "./hooks/useTileManager";
 
+const landscapeLabels = {
+	jungle: "Jungle",
+	rocky: "Carrière",
+	lake: "Lac",
+	meadow: "Steppe",
+	desert: "Désert",
+};
 function App() {
 	const {
 		availableIds,
@@ -255,19 +262,30 @@ function App() {
 				<div className="endgame-overlay">
 					<div className="endgame-popup">
 						<h2 className="endgame-title">Fin de partie</h2>
-						{score.details.map((scodetail) => (
-							<div className="score-line" key={scodetail.landscape}>
-								<span className="score-label">
-									{scodetail.landscape} : {scodetail.score}
-								</span>
-							</div>
-						))}
+						<ul className="score-list">
+							{score.details.map((scodetail) => (
+								<li className="score-line" key={scodetail.landscape}>
+									<span className="landscape-name">
+										{
+											landscapeLabels[
+												scodetail.landscape as keyof typeof landscapeLabels
+											]
+										}
+									</span>
+									<span className="points">{scodetail.score}</span>
+								</li>
+							))}
 
-						<div className="final-total">
-							<span>Total : {score.total}</span>
-						</div>
-
-						<button type="button" className="close-button">
+							<li className="final-total">
+								<span className="final-name">Total :</span>
+								<span className="final-points">{score.total}</span>
+							</li>
+						</ul>
+						<button
+							type="button"
+							className="close-button"
+							onClick={() => setScore(null)}
+						>
 							Fermer
 						</button>
 					</div>

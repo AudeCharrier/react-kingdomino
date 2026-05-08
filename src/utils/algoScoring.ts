@@ -20,7 +20,7 @@ interface CellData {
 	rotation: number;
 }
 
-const landscapes = ["dert", "meadow", "jungle", "lake", "rocky"];
+const landscapes = ["desert", "meadow", "jungle", "lake", "rocky"];
 
 function gridContentToAlgoArray(
 	gridContent: Record<string, CellData>,

@@ -1,16 +1,19 @@
 .btn-style-stone {
 	height: var(--button-height);
 	border: none;
-
 	background: #7d7d7d;
 	color: white;
 	border-radius: 6px;
-	border-bottom: 4px solid #4a4a4a; /* Effet 3D simple */
+	border-bottom: 4px solid #4a4a4a;
 	padding: 10px 20px;
+	font-size: 0.8rem;
 	font-family: "MedievalSharp", cursive;
 	text-transform: uppercase;
 	cursor: pointer;
 	transition: all 0.1s;
+	&:hover {
+		filter: brightness(1.25);
+	}
 	&:active {
 		border-bottom: 0px;
 		transform: translateY(4px);
