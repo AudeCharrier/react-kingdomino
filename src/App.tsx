@@ -206,6 +206,18 @@ function App() {
 				</section>
 				<aside className="playerhelper-container">
 					<PlayerHelper />
+					<button type="button" className="fake-btn-rotation">
+						<span className="kbd">R</span>
+						<span className="arrow">&#10227;</span>{" "}
+						<span className="text-rotation">Pivote la tuile à 90°</span>
+					</button>
+					<button
+						type="button"
+						className="btn-style-stone"
+						onClick={() => setScore(calculateScore(gridContent))}
+					>
+						Calculer le score
+					</button>
 				</aside>
 			</div>
 			{dragged && (
@@ -238,25 +250,29 @@ function App() {
 					/>
 				</div>
 			)}
-			<section className="section-score">
-				<button
-					type="button"
-					onClick={() => setScore(calculateScore(gridContent))}
-				>
-					Calculer le score
-				</button>
 
-				{score && (
-					<>
+			{score && (
+				<div className="endgame-overlay">
+					<div className="endgame-popup">
+						<h2 className="endgame-title">Fin de partie</h2>
 						{score.details.map((scodetail) => (
-							<p key={scodetail.landscape}>
-								{scodetail.landscape} : {scodetail.score}
-							</p>
+							<div className="score-line" key={scodetail.landscape}>
+								<span className="score-label">
+									{scodetail.landscape} : {scodetail.score}
+								</span>
+							</div>
 						))}
-						<p>Total : {score.total}</p>
-					</>
-				)}
-			</section>
+
+						<div className="final-total">
+							<span>Total : {score.total}</span>
+						</div>
+
+						<button type="button" className="close-button">
+							Fermer
+						</button>
+					</div>
+				</div>
+			)}
 		</main>
 	);
 }
