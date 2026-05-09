@@ -246,6 +246,10 @@ function App() {
 					</button>
 				</aside>
 			</div>
+			<article className="contact">
+				React-Kingdomino - v1.0 by
+				<a href="mailto:charrier.aude@gmail.com">Aude Charrier</a>
+			</article>
 			{dragged && (
 				<div
 					className="drag-container"
