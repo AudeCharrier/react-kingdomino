@@ -13,6 +13,7 @@ import "./styles/shared.css";
 
 import { useTileManager } from "./hooks/useTileManager";
 import StartOverlay from "./components/common/start_overlay/StartOverlay";
+import Header from "./components/common/header/Header";
 
 const landscapeLabels = {
 	jungle: "Jungle",
@@ -203,19 +204,20 @@ function App() {
 				if (e.key === "r" && dragged) rotate();
 			}}
 		>
-			<header className="kingdo-header">
+			<Header />
+			{/* <header className="kingdo-header">
 				<div className="reset-game">
-					<p>↑ Rafraîchis la page pour rejouer</p>
+					<p>🠕 Rafraîchis la page pour rejouer</p>
 					<p> (Bouton Reset coming soon !)</p>
 				</div>
 				<h1>Kingdomino Origins</h1>
 				<div className="credits">
 					<p>Un jeu de Bruno Cathala</p>
 					<a href="https://www.youtube.com/watch?v=e6UFh9tLAiA">
-						La règle en vidéo pour plusieurs joueurs
+						➞ La règle en vidéo pour plusieurs joueurs
 					</a>
 				</div>
-			</header>
+			</header> */}
 			{showOverlay && <StartOverlay onStart={handleCloseOverlay} />}
 			<div
 				className={
