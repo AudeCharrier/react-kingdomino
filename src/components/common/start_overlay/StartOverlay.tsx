@@ -3,23 +3,34 @@ import type React from "react";
 import "./StartOverlay.css";
 
 const steps = [
-	{ time: 0, text: "Mise en place : tire 4 tuiles du prochain tour" },
 	{
-		time: 1,
+		time: 0,
+		text: "Mise en place : tire 4 tuiles du prochain tour. Le chargement peut prendre quelques secondes...",
+	},
+	{
+		time: 8,
 		text: "Début d’un tour : mets les tuiles en jeu puis tire 4 nouvelles tuiles.",
 	},
 	{
-		time: 3,
+		time: 14,
 		text: "Choisis une tuile et amène-la sur la grille. Pivote avec R.",
 	},
 	{
-		time: 4,
-		text: "Connecte au moins un paysage commun. Attention, posé c’est posé !",
+		time: 26,
+		text: "Connecte au moins un paysage commun à une tuile déjà posée. Sois précis avec la souris. Attention, posé c’est posé !",
 	},
-	{ time: 5, text: "Optimise ton score avec les flammes (multiplicateurs)." },
+
 	{
-		time: 6,
-		text: "Score final : nombre de cases × nombre de flammes par zone.",
+		time: 33,
+		text: "En mode solo, dès que tu as joué 2 tuiles, le tour est fini.",
+	},
+	{
+		time: 44,
+		text: "Marque des points : une zone de même paysage = nombre de cases * nombre de flammes. Plusieurs zones possibles par paysage.",
+	},
+	{
+		time: 65,
+		text: "Découvre ton score final ! Pourras-tu battre ton record ?...",
 	},
 ];
 
@@ -42,7 +53,7 @@ function StartOverlay({ onStart }: { onStart: () => void }) {
 
 				<div className="video-container">
 					<video
-						src="/tuto.mp4" // Le "/" est important pour Netlify
+						src="/tuto_kingdo.mp4" // Le "/" est important pour Netlify
 						autoPlay
 						muted
 						loop
