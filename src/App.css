@@ -20,9 +20,28 @@
 	gap: 2rem;
 
 	.kingdo-header {
+		display: flex;
+		flex-direction: row;
+		justify-content: center;
+		align-items: center;
+		gap: 16rem;
 		width: 100%;
+		margin: auto;
 		height: 4rem;
 		padding: 0.8rem 0;
+		.reset-game,
+		.credits {
+			color: var(--bg-panel-light);
+			font-size: 1.2rem;
+			text-align: left;
+			a {
+				color: var(--bg-panel-light);
+				text-decoration: none;
+				&:hover {
+					text-decoration: underline;
+				}
+			}
+		}
 		h1 {
 			text-align: center;
 			color: var(--bg-panel-light);
