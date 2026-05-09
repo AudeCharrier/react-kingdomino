@@ -25,11 +25,6 @@
 		(var(--tile-padding) * 2) +
 		(var(--button-height))
 	);
-	/* 	--panel-min-width: calc(
-		(var(--tile-width) * 2) +
-		(var(--tile-gap)) +
-		(var(--tile-padding) * 2)
-	); */
 }
 * {
 	margin: 0;
