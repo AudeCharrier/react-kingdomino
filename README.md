@@ -106,7 +106,7 @@ npm install
 
 Créer un fichier .env à partir de .env.sample.<br>
 
-PORT=3000<br>
+PORT=3001<br>
 FRONT_URL=http://localhost:5173<br>
 
 ### Lancement du backend
@@ -127,7 +127,7 @@ npm install
 
 Créer un fichier .env à partir de .env.sample.<br>
 
-VITE_API_URL=http://localhost:3000
+VITE_API_URL=http://localhost:3001
 
 ### Lancement du frontend
 
