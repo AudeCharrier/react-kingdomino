@@ -1,19 +1,21 @@
 import { useRef, useState } from "react";
 import { calculateScore } from "./utils/algoScoring";
 import { useDrag } from "./contexts/DragContext";
+import { useTileManager } from "./hooks/useTileManager";
+
 import BaseTile from "./components/base/base_tiles/BaseTile";
 import FourTiles from "./components/base/four_tiles/FourTiles";
+import Header from "./components/common/header/Header";
 import MoveButton from "./components/base/move_button/MoveButton.js";
 import PlayGrid from "./components/base/play_grid/PlayGrid.js";
-import RandomButton from "./components/base/random_button/RandomButton";
 import PlayerHelper from "./components/common/player_helper/PlayerHelper.js";
+import RandomButton from "./components/base/random_button/RandomButton";
+import StartOverlay from "./components/common/start_overlay/StartOverlay";
+
 import type { TileProps, ScoreResult } from "./types/game.types";
+
 import "./App.css";
 import "./styles/shared.css";
-
-import { useTileManager } from "./hooks/useTileManager";
-import StartOverlay from "./components/common/start_overlay/StartOverlay";
-import Header from "./components/common/header/Header";
 
 const landscapeLabels = {
 	jungle: "Jungle",
