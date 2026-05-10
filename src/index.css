@@ -3,7 +3,7 @@
 	color-scheme: light dark;
 	color: var(--text-dark);
 	font-family: "Piedra", system-ui;
-	background-image: url("src/assets/bg_kingdo_16_9_gamma2.webp");
+	background-image: url("/bg_kingdo_16_9_gamma2.webp");
 	background-position: center bottom;
 	background-size: cover;
 	background-repeat: no-repeat;
