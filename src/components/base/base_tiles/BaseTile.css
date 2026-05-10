@@ -1,0 +1,21 @@
+.img-container {
+	display: flex;
+	flex-direction: row;
+	width: var(--tile-width);
+	height: var(--tile-height);
+	&:hover {
+		cursor: pointer;
+	}
+}
+
+.left-tile {
+	object-fit: cover;
+	object-position: left;
+	overflow: hidden;
+}
+
+.right-tile {
+	object-fit: cover;
+	object-position: right;
+	overflow: hidden;
+}

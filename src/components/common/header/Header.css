@@ -1,0 +1,33 @@
+.kingdo-header {
+	display: flex;
+	flex-direction: row;
+	justify-content: center;
+	align-items: center;
+	gap: 16rem;
+	width: 100%;
+	margin: auto;
+	height: 4rem;
+	padding: 2rem;
+	background-color: rgba(128, 128, 128, 0.25);
+	.reset-game,
+	.credits {
+		color: var(--bg-panel-light);
+		font-size: 1rem;
+		text-align: left;
+		letter-spacing: 1px;
+
+		a {
+			color: var(--bg-panel-light);
+			text-decoration: none;
+			&:hover {
+				text-decoration: underline;
+			}
+		}
+	}
+	h1 {
+		text-align: center;
+		color: var(--bg-panel-light);
+		letter-spacing: 1px;
+		font-size: 2.6rem;
+	}
+}

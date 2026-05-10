@@ -1,0 +1,8 @@
+.four-tiles-container {
+	display: flex;
+	flex-direction: column;
+	justify-content: center;
+	align-items: flex-start;
+	gap: var(--tile-gap);
+	width: var(--tile-width);
+}
