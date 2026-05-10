@@ -1,18 +1,38 @@
 import { useRef, useState } from "react";
 import { calculateScore } from "./utils/algoScoring";
 import { useDrag } from "./contexts/DragContext";
-import BaseTile from "./components/base/base_tiles/BaseTile";
-import FourTiles from "./components/base/four_tiles/FourTiles";
-import MoveButton from "./components/base/move_button/MoveButton.js";
-import PlayGrid from "./components/base/play_grid/PlayGrid.js";
-import RandomButton from "./components/base/random_button/RandomButton";
-
-import type { TileProps, ScoreResult } from "./types/game.types";
-import "./App.css";
-
 import { useTileManager } from "./hooks/useTileManager";
 
+import BaseTile from "./components/base/base_tiles/BaseTile";
+import FourTiles from "./components/base/four_tiles/FourTiles";
+import Header from "./components/common/header/Header";
+import MoveButton from "./components/base/move_button/MoveButton.js";
+import PlayGrid from "./components/base/play_grid/PlayGrid.js";
+import PlayerHelper from "./components/common/player_helper/PlayerHelper.js";
+import RandomButton from "./components/base/random_button/RandomButton";
+import StartOverlay from "./components/common/start_overlay/StartOverlay";
+
+import type { TileProps, ScoreResult } from "./types/game.types";
+
+import "./App.css";
+import "./styles/shared.css";
+
+const landscapeLabels = {
+	jungle: "Jungle",
+	rocky: "Carrière",
+	lake: "Lac",
+	meadow: "Steppe",
+	desert: "Désert",
+};
 function App() {
+	// start overlay tuto
+	const [showOverlay, setShowOverlay] = useState(true);
+
+	const handleCloseOverlay = () => {
+		setShowOverlay(false);
+	};
+
+	//données et effets de jeu : id des tuiles, tuile dragged, effet snap
 	const {
 		availableIds,
 		nextTiles,
@@ -33,8 +53,11 @@ function App() {
 
 	// État pour stocker les tuiles posées sur la grille
 	const [gridContent, setGridContent] = useState<Record<string, any>>({});
+
+	// score
 	const [score, setScore] = useState<ScoreResult | null>(null);
 
+	// pivoter une tuile
 	const rotationRef = useRef(0);
 	const offsetRef = useRef({ x: 0, y: 0 });
 
@@ -46,6 +69,7 @@ function App() {
 		});
 	};
 
+	// déplacer une tuile
 	function handleMouseDown(e: React.MouseEvent, tile: TileProps) {
 		if (e.button !== 0) return;
 		e.preventDefault();
@@ -176,29 +200,58 @@ function App() {
 
 	return (
 		<main
+			className="app-container"
 			tabIndex={0}
 			onKeyDown={(e) => {
 				if (e.key === "r" && dragged) rotate();
 			}}
 		>
-			<header className="kingdo-header"></header>
-			<section className="draw-tiles">
-				<div className="buttons-and-meeples">
-					<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
-					<MoveButton onMove={() => MoveButtonTiles()} />
-				</div>
-				<FourTiles tiles={nextTiles} draggable={false} />
-				<FourTiles
-					tiles={currentTiles}
-					draggable={true}
-					onMouseDown={handleMouseDown}
-				/>
-			</section>
+			<Header />
 
-			<section className="section-play">
-				<PlayGrid gridContent={gridContent} />
-			</section>
+			{showOverlay && <StartOverlay onStart={handleCloseOverlay} />}
+			<div
+				className={
+					showOverlay ? "game-content blur-effect" : "game-content game-layout"
+				}
+			>
+				<section className="draw-tiles">
+					<div className="four-tiles">
+						<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
+						<FourTiles tiles={nextTiles} draggable={false} />
+					</div>
+					<div className="four-tiles">
+						<MoveButton onMove={() => MoveButtonTiles()} />
+						<FourTiles
+							tiles={currentTiles}
+							draggable={true}
+							onMouseDown={handleMouseDown}
+						/>
+					</div>
+				</section>
 
+				<section className="section-play">
+					<PlayGrid gridContent={gridContent} />
+				</section>
+				<aside className="playerhelper-container">
+					<PlayerHelper />
+					<button type="button" className="fake-btn-rotation">
+						<span className="kbd">R</span>
+						<span className="arrow">&#10227;</span>{" "}
+						<span className="text-rotation">Pivote la tuile à 90°</span>
+					</button>
+					<button
+						type="button"
+						className="btn-style-stone btn-score"
+						onClick={() => setScore(calculateScore(gridContent))}
+					>
+						Calculer le score
+					</button>
+				</aside>
+			</div>
+			<article className="contact">
+				React-Kingdomino - v1.0 by
+				<a href="mailto:charrier.aude@gmail.com">Aude Charrier</a>
+			</article>
 			{dragged && (
 				<div
 					className="drag-container"
@@ -229,25 +282,40 @@ function App() {
 					/>
 				</div>
 			)}
-			<section className="section-score">
-				<button
-					type="button"
-					onClick={() => setScore(calculateScore(gridContent))}
-				>
-					Calculer le score
-				</button>
 
-				{score && (
-					<>
-						{score.details.map((scodetail) => (
-							<p key={scodetail.landscape}>
-								{scodetail.landscape} : {scodetail.score}
-							</p>
-						))}
-						<p>Total : {score.total}</p>
-					</>
-				)}
-			</section>
+			{score && (
+				<div className="overlay">
+					<div className="endgame-popup">
+						<h2 className="endgame-title">Fin de partie</h2>
+						<ul className="score-list">
+							{score.details.map((scodetail) => (
+								<li className="score-line" key={scodetail.landscape}>
+									<span className="landscape-name">
+										{
+											landscapeLabels[
+												scodetail.landscape as keyof typeof landscapeLabels
+											]
+										}
+									</span>
+									<span className="points">{scodetail.score}</span>
+								</li>
+							))}
+
+							<li className="final-total">
+								<span className="final-name">Total :</span>
+								<span className="final-points">{score.total}</span>
+							</li>
+						</ul>
+						<button
+							type="button"
+							className="close-button"
+							onClick={() => setScore(null)}
+						>
+							Fermer
+						</button>
+					</div>
+				</div>
+			)}
 		</main>
 	);
 }

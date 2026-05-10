@@ -1,8 +1,11 @@
 .img-container {
 	display: flex;
 	flex-direction: row;
-	width: 150px;
-	height: 75px;
+	width: var(--tile-width);
+	height: var(--tile-height);
+	&:hover {
+		cursor: pointer;
+	}
 }
 
 .left-tile {

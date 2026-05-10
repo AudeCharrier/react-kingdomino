@@ -23,30 +23,30 @@ interface PlayGridProps {
 
 function PlayGrid({ gridContent }: PlayGridProps) {
 	return (
-		<div className="play-grid">
-			{arrayCellId.map((cellId) => {
-				const infoTile = gridContent[cellId];
+		<div className="board-container">
+			<div className="play-grid">
+				{arrayCellId.map((cellId) => {
+					const infoTile = gridContent[cellId];
 
-				return (
-					<div key={cellId} className="cell-play-grid" data-cell-id={cellId}>
-						{infoTile ? (
-							<div
-								className="img-container-single"
-								style={{ transform: `rotate(${infoTile.rotation}deg)` }}
-							>
+					return (
+						<div key={cellId} className="cell-play-grid" data-cell-id={cellId}>
+							{infoTile ? (
 								<div
-									className={`placed-img-bg ${infoTile.part === "left-part" ? "left-part" : "right-part"}`}
-									style={{ backgroundImage: `url(${infoTile.imgSrc})` }}
-									data-landscape={infoTile.landscape}
-									data-flames={infoTile.flames}
-								></div>
-							</div>
-						) : (
-							cellId
-						)}
-					</div>
-				);
-			})}
+									className="img-container-single"
+									style={{ transform: `rotate(${infoTile.rotation}deg)` }}
+								>
+									<div
+										className={`placed-img-bg ${infoTile.part === "left-part" ? "left-part" : "right-part"}`}
+										style={{ backgroundImage: `url(${infoTile.imgSrc})` }}
+										data-landscape={infoTile.landscape}
+										data-flames={infoTile.flames}
+									></div>
+								</div>
+							) : null}
+						</div>
+					);
+				})}
+			</div>
 		</div>
 	);
 }
