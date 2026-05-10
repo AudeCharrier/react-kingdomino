@@ -1,73 +1,139 @@
-# React + TypeScript + Vite
+# 👑 Kingdomino
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+Application web inspirée de Kingdomino Origins, permettant de jouer en solo avec une interface interactive et une gestion dynamique des parties.
 
-Currently, two official plugins are available:
+👉 Démo : [Netlify - React-Kingdomino](https://react-kingdomino.netlify.app) <br>
+👉 Front : [GitHub - Kingdomino](https://github.com/audecharrier/react-kingdomino) <br>
+👉 API : [GitHub - API Kingdomino](https://github.com/audecharrier/api-kingdomino)
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+<br>
 
-## React Compiler
+## Contexte
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+Projet réalisé seule dans le cadre de mon apprentissage du développement web avec React.
 
-## Expanding the ESLint configuration
+Objectif : concevoir une application plus complexe qu’un site vitrine, intégrant logique de jeu, interactions avancées et gestion d’état dynamique.
 
-If you are developing a production application, we recommend updating the configuration to enable type-aware lint rules:
+Adaptation du jeu Kingdomino Origins avec une API dédiée pour la gestion des tuiles.
 
-```js
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
+<br>
 
-      // Remove tseslint.configs.recommended and replace with this
-      tseslint.configs.recommendedTypeChecked,
-      // Alternatively, use this for stricter rules
-      tseslint.configs.strictTypeChecked,
-      // Optionally, add this for stylistic rules
-      tseslint.configs.stylisticTypeChecked,
+## Fonctionnalités
 
-      // Other configs...
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+- Interface de jeu complète et immersive (plateau interactif)
+- Tirage aléatoire des dominos en temps réel
+- Drag & drop des tuiles sur une grille dynamique
+- Application des règles du jeu Kingdomino
+- Calcul automatique des scores
+- Overlays tutoriel et score de fin de partie
+
+<br>
+
+## Stack technique
+
+![Mes technos](https://skillicons.dev/icons?i=react,ts,js,nodejs,express,html,css,git,github)
+
+<br>
+
+
+## Développement en autonomie
+
+### Logique de jeu
+
+- Création et consommation d’une API personnalisée
+- Gestion d’un système de jeu complet en React
+- Implémentation d’un système de tirage aléatoire sans remise
+- Implémentation du drag & drop sur grille dynamique
+- Gestion d’état et d'évènements complexe (React)
+- Algorithme de scoring basé sur des règles métier
+- Conception d’une architecture full-stack (front + API)
+
+<br>
+
+### Interface et expérience utilisateur
+
+- Création complète de l’interface et du plateau de jeu
+- Travail sur l’immersion, la lisibilité et la fluidité des interactions (drag & drop)
+- Intégration d’un tutoriel vidéo directement dans l’application
+
+<br>
+
+## Difficultés rencontrées
+
+- Gestion spatiale différente d'un site web
+- Mise en place du drag & drop sur un plateau dynamique
+- Mise en place du snap des tuiles sur les cellules de la grille
+- Construction de l’algorithme de calcul des scores
+- Gestion des nombreux états liés à la partie
+
+<br>
+
+## Améliorations possibles
+
+- Sécurisation du gameplay (validations, misclicks, recouvrement)
+- Ajout de mécaniques avancées (volcans, règles supplémentaires)
+- Amélioration UX (responsive, tutoriel, tours restants)
+- Polish visuel et sonore
+- Fonctionnalités avancées (multijoueur, comptes, stats)
+
+<br>
+
+## Gestion du projet
+
+Projet réalisé entièrement seule.
+
+Ce projet m’a permis de développer mon autonomie sur :
+- l’architecture d’une application React
+- la gestion d’interactions complexes
+- la communication entre le front et l’API
+- la réflexion sur l'expérience utilisateur
+- la conception et la réalisation d’un projet de A à Z
+- l’organisation d’un workflow Git
+
+<br>
+
+## 📂 Installation
+
+### Backend (API)
+
+```bash
+git clone https://github.com/audecharrier/api-kingdomino
+cd api-kingdomino
+npm install
 ```
 
-You can also install [eslint-plugin-react-x](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-x) and [eslint-plugin-react-dom](https://github.com/Rel1cx/eslint-react/tree/main/packages/plugins/eslint-plugin-react-dom) for React-specific lint rules:
+### Configuration du backend
 
-```js
-// eslint.config.js
-import reactX from 'eslint-plugin-react-x'
-import reactDom from 'eslint-plugin-react-dom'
+Créer un fichier .env à partir de .env.sample.<br>
 
-export default defineConfig([
-  globalIgnores(['dist']),
-  {
-    files: ['**/*.{ts,tsx}'],
-    extends: [
-      // Other configs...
-      // Enable lint rules for React
-      reactX.configs['recommended-typescript'],
-      // Enable lint rules for React DOM
-      reactDom.configs.recommended,
-    ],
-    languageOptions: {
-      parserOptions: {
-        project: ['./tsconfig.node.json', './tsconfig.app.json'],
-        tsconfigRootDir: import.meta.dirname,
-      },
-      // other options...
-    },
-  },
-])
+PORT=3000<br>
+FRONT_URL=http://localhost:5173<br>
+
+### Lancement du backend
+
+```bash
+node index.js
 ```
+
+### Frontend
+
+```bash
+git clone https://github.com/audecharrier/react-kingdomino
+cd react-kingdomino
+npm install
+```
+
+### Configuration du frontend
+
+Créer un fichier .env à partir de .env.sample.<br>
+
+VITE_API_URL=http://localhost:3000
+
+### Lancement du frontend
+
+```bash
+npm run dev
+```
+
+
+
