@@ -40,6 +40,8 @@ function App() {
 		setCurrentTiles,
 		DrawFourTiles,
 		MoveButtonTiles,
+		error,
+		isLoading,
 	} = useTileManager();
 
 	const { dragged, setDragged, tilePosition, setTilePosition } = useDrag();
@@ -217,7 +219,29 @@ function App() {
 				<section className="draw-tiles">
 					<div className="four-tiles">
 						<RandomButton onDraw={() => DrawFourTiles(availableIds)} />
-						<FourTiles tiles={nextTiles} draggable={false} />
+						{error ? (
+							<div className="tiles-error">
+								<p style={{ color: "#ff4d4d", fontWeight: "bold" }}>
+									Impossible de charger les tuiles :/
+								</p>
+								<p style={{ fontSize: "0.9rem", color: "#3d2d21" }}>{error}</p>
+							</div>
+						) : isLoading ? (
+							<div className="tiles-loading-ghost">
+								<p>Chargement en cours, réveil du serveur Render (30-50s)...</p>
+								<p
+									style={{
+										fontSize: "0.9rem",
+										color: "#d97706",
+										fontWeight: "500",
+									}}
+								>
+									⚠️ Ne pas cliquer sur "Prochain tour" pendant le chargement.
+								</p>
+							</div>
+						) : (
+							<FourTiles tiles={nextTiles} draggable={false} />
+						)}
 					</div>
 					<div className="four-tiles">
 						<MoveButton onMove={() => MoveButtonTiles()} />
