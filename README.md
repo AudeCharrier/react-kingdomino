@@ -2,7 +2,7 @@
 
 Application web inspirée de Kingdomino Origins, permettant de jouer en solo avec une interface interactive et une gestion dynamique des parties.
 
-👉 Démo : [Netlify - React-Kingdomino](https://react-kingdomino.netlify.app) <br>
+👉 Démo : [Netlify - React-Kingdomino](https://react-kingdomino.netlify.app) -> regarder le tutoriel puis cliquer sur Prochain Tour<br>
 👉 Front : [GitHub - Kingdomino](https://github.com/audecharrier/react-kingdomino) <br>
 👉 API : [GitHub - API Kingdomino](https://github.com/audecharrier/api-kingdomino)
 
